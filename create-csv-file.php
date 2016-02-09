@@ -404,8 +404,20 @@ $infoArray = array_merge(array(array(
     "Kategorie"
 )), $infoArray);
 
-$file = fopen('le-online-extracted-places.csv', 'w');
+$filename = 'le-online-extracted-places.csv';
+$file = fopen($filename, 'w');
 foreach ($infoArray as $key => $value) {
-    fputcsv($file, $value, ',', '"');
+    fputcsv(
+        $file,
+        str_replace(
+            array('&auml;', '&ouml;', '&uuml;', '&szlig;'),
+            array('ä', 'ö', 'ü', 'ß'),
+            $value
+        ),
+        ',',
+        '"'
+    );
 }
 fclose($file);
+echo 'CSV-Datei '. $filename .' mit '. $key .' Einträgen erzeugt.
+';
