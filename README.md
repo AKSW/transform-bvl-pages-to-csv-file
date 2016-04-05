@@ -1,6 +1,6 @@
 # Transformator to create CSV file out of pages from Behindertenverband Leipzig e.V.
 
-This repository contains a simple PHP script, which transforms pages about places in Leipzig and their degree of accessibility into a single CSV file. These pages are being provided by the [Behindertenverband Leipzig e.V](http://www.le-online.de/).
+This repository contains a simple PHP script, which transforms pages about places in Leipzig and their degree of accessibility into a single CSV file (in German). These pages are being provided by the [Behindertenverband Leipzig e.V](http://www.le-online.de/).
 
 The following pages are covered currently:
 * Education: http://www.le-online.de/bildung.htm
