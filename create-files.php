@@ -346,7 +346,7 @@ foreach ($htmlPages as $url => $category) {
 }
 
 // Generate CSV file
-// createCSVFile('le-online-extracted-places.csv', $infoArray);
+ createCSVFile('le-online-extracted-places.csv', $infoArray);
 
 // Generate RDF/n-triples file
 createRDFTurtleFile('le-online-extracted-places.nt', $infoArray);

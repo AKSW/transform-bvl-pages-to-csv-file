@@ -90,7 +90,7 @@ function createCSVFile($filename, array $infoArray)
         );
     }
     fclose($file);
-    echo 'CSV-Datei '. $filename .' mit '. $key .' Einträgen erzeugt.' . PHP_EOL;
+    echo 'CSV-file '. $filename .' with '. $key .' entries created.' . PHP_EOL;
 }
 
 /**
@@ -175,4 +175,6 @@ function createRDFTurtleFile($filename, array $infoArray)
         new ArrayStatementIteratorImpl($stmtArray),
         __DIR__ . '/'. $filename
     );
+
+    echo 'N-Triples file '. $filename .' with '. count($stmtArray) .' triples created.' . PHP_EOL;
 }
