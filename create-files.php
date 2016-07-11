@@ -12,36 +12,6 @@
 
 require 'vendor/autoload.php';
 
-/**
- * Unset empty array entries.
- *
- * @param array $array
- * @return array
- */
-function unsetEmptyEntry($array)
-{
-    foreach ($array as $key => $entry) {
-        if (is_array($entry)) {
-            $array[$key] = unsetEmptyEntry($entry);
-
-            if (empty($array[$key])) {
-                unset($array[$key]);
-            }
-
-        } elseif (is_array($entry) && 0 == count($entry)) {
-            unset($array[$key]);
-        } elseif ('' == $entry || empty($entry)) {
-            unset($array[$key]);
-        }
-    }
-
-    if (is_array($array) && 0 == count($array)) {
-        return '';
-    } else {
-        return $array;
-    }
-}
-
 setlocale(LC_CTYPE, 'de_DE.UTF-8');
 
 /*
@@ -64,6 +34,7 @@ $fileContentArray = array();
 $key = 0;
 $curl = new Curl\Curl();
 
+// go through html pages, download and parse them to extract relevant information later on
 foreach ($htmlPages as $url => $category) {
     // use $url to ask for HTML to analyse later on
     $curl->get($url);
@@ -327,9 +298,6 @@ foreach ($htmlPages as $url => $category) {
         // category of the building
         $infoArray[$key]['category'] = $category;
 
-        // unset empty entries
-        // $infoArray[$key] = unsetEmptyEntry($infoArray[$key]);
-
         // remove entries which only have one entry, which means its usually something like:
         // <a name="sport"> Sportanlagen </a></h2>
         // <p></p><p></p>
@@ -338,9 +306,8 @@ foreach ($htmlPages as $url => $category) {
             unset($infoArray[$key]);
         }
 
-
         /**
-         * Exception handling of certain entries of Verkehr category
+         * Exception handling of certain entries of Verkehr category, which will be kept
          */
         $exceptionalEntries = array(
             'Augustusplatz (Tiefgarage)',
@@ -364,60 +331,22 @@ foreach ($htmlPages as $url => $category) {
 
         if (!in_array($infoArray[$key]['title'], $exceptionalEntries) && 'Verkehr' == $category) {
             unset($infoArray[$key]);
+
+        // replace HTML-shortcodes with real special signs (e.g. &uuml; => ü)
+        } else {
+            foreach ($infoArray[$key] as $key2 => $value) {
+                $infoArray[$key][$key2] = str_replace(
+                    array('&auml;', '&ouml;', '&uuml;', '&szlig;', '&szlig;'),
+                    array('ä',      'ö',      'ü',      'ß',       '&'),
+                    $value
+                );
+            }
         }
     }
 }
 
-/**
- * CSV
- */
+// Generate CSV file
+ createCSVFile('le-online-extracted-places.csv', $infoArray);
 
-$infoArray = array_merge(array(array(
-    "Titel",
-    "Straße",
-    "E-Mail",
-    "Homepage",
-    "Telefonnummer",
-    "Hinweis",
-    "Eingangsbereich: Zugang",
-    "Eingangsbereich: Türbreite",
-    "Eingangsbereich: Rollstuhl geeignet",
-    "Aufzug: Türbreite",
-    "Aufzug: Kabinen-Tiefe",
-    "Aufzug: Kabinen-Breite",
-    "Aufzug: Höhe der Bedienelemente außen, innen",
-    "Aufzug: Rollstuhl-geeignet",
-    "Aufzug: vorhanden?",
-    "Behinderten-Toilette: stufenlos erreichbar",
-    "Behinderten-Toilette: Türbreite",
-    "Behinderten-Toilette: Platz links vom WC",
-    "Behinderten-Toilette: Platz rechts vom WC",
-    "Behinderten-Toilette: Platz vor dem WC",
-    "Behinderten-Toilette: Stützgriffe links klappbar",
-    "Behinderten-Toilette: Stützgriffe rechts klappbar",
-    "Behinderten-Toilette: Stützgriffe links oder rechts klappbar",
-    "Behinderten-Toilette: Rollstuhl geeignet",
-    "Hilfen für hörgeschädigte Menschen",
-    "Hilfen für blinde oder sehbehinderte Menschen",
-    "Markierte Behindertenparkplätze sind vorhanden ",
-    "Spezielle und persönliche Hilfeleistungen für Menschen mit Behinderungen",
-    "Kategorie"
-)), $infoArray);
-
-$filename = 'le-online-extracted-places.csv';
-$file = fopen($filename, 'w');
-foreach ($infoArray as $key => $value) {
-    fputcsv(
-        $file,
-        str_replace(
-            array('&auml;', '&ouml;', '&uuml;', '&szlig;'),
-            array('ä', 'ö', 'ü', 'ß'),
-            $value
-        ),
-        ',',
-        '"'
-    );
-}
-fclose($file);
-echo 'CSV-Datei '. $filename .' mit '. $key .' Einträgen erzeugt.
-';
+// Generate RDF/n-triples file
+createRDFTurtleFile('le-online-extracted-places.nt', $infoArray);

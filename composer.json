@@ -1,7 +1,13 @@
 {
     "name": "aksw/transform-bvl-pages-to-csv-file",
     "require": {
-        "php-curl-class/php-curl-class": "*"
+        "php-curl-class/php-curl-class": "4.*",
+        "saft/saft-data": "0.2.*",
+        "saft/saft-rdf": "0.2.*"
     },
-    "license": "GPL-3.0"
+    "prefer-stable": true,
+    "license": "GPL-3.0",
+    "autoload": {
+        "files": ["functions.php"]
+    }
 }
