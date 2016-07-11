@@ -7,36 +7,6 @@ use Saft\Rdf\NamedNodeImpl;
 use Saft\Rdf\StatementImpl;
 
 /**
- * Unset empty array entries.
- *
- * @param array $array
- * @return array
- */
-function unsetEmptyEntry($array)
-{
-    foreach ($array as $key => $entry) {
-        if (is_array($entry)) {
-            $array[$key] = unsetEmptyEntry($entry);
-
-            if (empty($array[$key])) {
-                unset($array[$key]);
-            }
-
-        } elseif (is_array($entry) && 0 == count($entry)) {
-            unset($array[$key]);
-        } elseif ('' == $entry || empty($entry)) {
-            unset($array[$key]);
-        }
-    }
-
-    if (is_array($array) && 0 == count($array)) {
-        return '';
-    } else {
-        return $array;
-    }
-}
-
-/**
  * Generates CSV file
  *
  * @param string $filename
@@ -44,50 +14,13 @@ function unsetEmptyEntry($array)
  */
 function createCSVFile($filename, array $infoArray)
 {
-    $infoArray = array_merge(array(array(
-        "Titel",
-        "Straße",
-        "E-Mail",
-        "Homepage",
-        "Telefonnummer",
-        "Hinweis",
-        "Eingangsbereich: Zugang",
-        "Eingangsbereich: Türbreite",
-        "Eingangsbereich: Rollstuhl geeignet",
-        "Aufzug: Türbreite",
-        "Aufzug: Kabinen-Tiefe",
-        "Aufzug: Kabinen-Breite",
-        "Aufzug: Höhe der Bedienelemente außen, innen",
-        "Aufzug: Rollstuhl-geeignet",
-        "Aufzug: vorhanden?",
-        "Behinderten-Toilette: stufenlos erreichbar",
-        "Behinderten-Toilette: Türbreite",
-        "Behinderten-Toilette: Platz links vom WC",
-        "Behinderten-Toilette: Platz rechts vom WC",
-        "Behinderten-Toilette: Platz vor dem WC",
-        "Behinderten-Toilette: Stützgriffe links klappbar",
-        "Behinderten-Toilette: Stützgriffe rechts klappbar",
-        "Behinderten-Toilette: Stützgriffe links oder rechts klappbar",
-        "Behinderten-Toilette: Rollstuhl geeignet",
-        "Hilfen für hörgeschädigte Menschen",
-        "Hilfen für blinde oder sehbehinderte Menschen",
-        "Markierte Behindertenparkplätze sind vorhanden ",
-        "Spezielle und persönliche Hilfeleistungen für Menschen mit Behinderungen",
-        "Kategorie"
-    )), $infoArray);
-
     $file = fopen($filename, 'w');
+    $copy = $infoArray;
+
+    // set title
+    fputcsv($file, array_keys(array_shift($copy)));
     foreach ($infoArray as $key => $value) {
-        fputcsv(
-            $file,
-            str_replace(
-                array('&auml;', '&ouml;', '&uuml;', '&szlig;', '&szlig;'),
-                array('ä',      'ö',      'ü',      'ß',       '&'),
-                $value
-            ),
-            ',', // delimiter
-            '"'  // surrounds a datafield
-        );
+        fputcsv($file, $value);
     }
     fclose($file);
     echo 'CSV-file '. $filename .' with '. $key .' entries created.' . PHP_EOL;
@@ -112,17 +45,15 @@ function createRDFTurtleFile($filename, array $infoArray)
          */
         $placeUri = str_replace(
             array(
-                ' ',     'ß',  'ä',  'ü',  'ö',  'ö',  '<br-/>', '&uuml;', '&auml;', '&ouml;', '"', 'eacute;', '/',
+                ' ',     'ß',  'ä',  'Ä',  'ü',  'Ü',  'ö',  'Ö',  '<br-/>', '&uuml;', '&auml;', '&ouml;', '"', 'eacute;', '/',
                 'ouml;', 'auml;', 'uuml;', ',', "'", '>', '<', '`', '´'
             ),
             array(
-                '-',     'ss', 'ae', 'ue', 'oe', 'oe', '',       'ue',     'ae',     'oe',     '',  'e',       '_',
+                '-',     'ss', 'ae', 'ae', 'ue', 'ue', 'oe', 'oe', '',       'ue',     'ae',     'oe',     '',  'e',       '_',
                 'oe',    'ae',    'ue',    '-', '_', '-', '-', '-', '-'
             ),
-            strtolower(
-                trim(
-                    preg_replace('/\s\s+/', ' ', $placeEntry['title'])
-                )
+            trim(
+                preg_replace('/\s\s+/', ' ', strtolower($placeEntry['Titel']))
             )
         );
         $placeUri = $bvlRootUrl . str_replace(array('&', ), array('-and-',), $placeUri);
@@ -130,41 +61,25 @@ function createRDFTurtleFile($filename, array $infoArray)
         // title
         $stmtArray[] = new StatementImpl(
             new NamedNodeImpl($placeUri),
-            new NamedNodeImpl($bvlNamespaceUrl . 'placeName'),
-            new LiteralImpl($placeEntry['title'])
+            new NamedNodeImpl($bvlNamespaceUrl . 'title'),
+            new LiteralImpl($placeEntry['Titel'])
         );
 
         // address information
         $stmtArray[] = new StatementImpl(
             new NamedNodeImpl($placeUri),
-            new NamedNodeImpl($bvlNamespaceUrl . 'address'),
-            new LiteralImpl(preg_replace('/\s\s+/', ' ', $placeEntry['street']))
-        );
-
-        // lift infos
-        $stmtArray[] = new StatementImpl(
-            new NamedNodeImpl($placeUri),
-            new NamedNodeImpl($bvlNamespaceUrl . 'lift-available'),
-            new LiteralImpl('vorhanden' == $placeEntry['lift-persons-available'] ? 'yes' : 'no')
+            new NamedNodeImpl($bvlNamespaceUrl . 'street'),
+            new LiteralImpl(preg_replace('/\s\s+/', ' ', $placeEntry['Straße']))
         );
         $stmtArray[] = new StatementImpl(
             new NamedNodeImpl($placeUri),
-            new NamedNodeImpl($bvlNamespaceUrl . 'lift-liftWithWheelChairSupportAvailable'),
-            new LiteralImpl('ja' == $placeEntry['lift-wheelchair-support'] ? 'yes' : 'no')
+            new NamedNodeImpl($bvlNamespaceUrl . 'zipCode'),
+            new LiteralImpl(preg_replace('/\s\s+/', ' ', $placeEntry['PLZ']))
         );
-
-        // toilett
         $stmtArray[] = new StatementImpl(
             new NamedNodeImpl($placeUri),
-            new NamedNodeImpl($bvlNamespaceUrl . 'toilets-toiletForDisabledPeopleAvailable'),
-            new LiteralImpl('' != $placeEntry['toilets-wheelchair-support'] ? 'yes' : 'no')
-        );
-
-        // parking slot
-        $stmtArray[] = new StatementImpl(
-            new NamedNodeImpl($placeUri),
-            new NamedNodeImpl($bvlNamespaceUrl . 'parkingLot-lotsForDisabledPeopleAvailable'),
-            new LiteralImpl('vorhanden' == $placeEntry['parkingLotForHandicapedPersons-support'] ? 'yes' : 'no')
+            new NamedNodeImpl($bvlNamespaceUrl . 'city'),
+            new LiteralImpl(preg_replace('/\s\s+/', ' ', $placeEntry['Ort']))
         );
     }
 
