@@ -61,25 +61,64 @@ function createRDFTurtleFile($filename, array $infoArray)
         // title
         $stmtArray[] = new StatementImpl(
             new NamedNodeImpl($placeUri),
-            new NamedNodeImpl($bvlNamespaceUrl . 'title'),
+            new NamedNodeImpl($bvlNamespaceUrl . 'titel'),
             new LiteralImpl($placeEntry['Titel'])
         );
 
-        // address information
+        /*
+         * address information
+         */
         $stmtArray[] = new StatementImpl(
             new NamedNodeImpl($placeUri),
-            new NamedNodeImpl($bvlNamespaceUrl . 'street'),
+            new NamedNodeImpl($bvlNamespaceUrl . 'strasse'),
             new LiteralImpl(preg_replace('/\s\s+/', ' ', $placeEntry['Straße']))
         );
         $stmtArray[] = new StatementImpl(
             new NamedNodeImpl($placeUri),
-            new NamedNodeImpl($bvlNamespaceUrl . 'zipCode'),
+            new NamedNodeImpl($bvlNamespaceUrl . 'postleitzahl'),
             new LiteralImpl(preg_replace('/\s\s+/', ' ', $placeEntry['PLZ']))
         );
         $stmtArray[] = new StatementImpl(
             new NamedNodeImpl($placeUri),
-            new NamedNodeImpl($bvlNamespaceUrl . 'city'),
+            new NamedNodeImpl($bvlNamespaceUrl . 'stadt'),
             new LiteralImpl(preg_replace('/\s\s+/', ' ', $placeEntry['Ort']))
+        );
+
+        /*
+         * entrance area
+         */
+        $stmtArray[] = new StatementImpl(
+            new NamedNodeImpl($placeUri),
+            new NamedNodeImpl($bvlNamespaceUrl . 'eingangsbereichIstRollstuhlgerecht'),
+            new LiteralImpl(preg_replace('/\s\s+/', ' ', $placeEntry['Eingangsbereich ist rollstuhlgerecht']))
+        );
+
+        /*
+         * lift
+         */
+        $stmtArray[] = new StatementImpl(
+            new NamedNodeImpl($placeUri),
+            new NamedNodeImpl($bvlNamespaceUrl . 'personenAufzugVorhanden'),
+            new LiteralImpl(preg_replace('/\s\s+/', ' ', $placeEntry['Personenaufzug vorhanden']))
+        );
+        $stmtArray[] = new StatementImpl(
+            new NamedNodeImpl($placeUri),
+            new NamedNodeImpl($bvlNamespaceUrl . 'aufzugIstRollstuhlgerecht'),
+            new LiteralImpl(preg_replace('/\s\s+/', ' ', $placeEntry['Aufzug ist rollstuhlgerecht']))
+        );
+
+        /*
+         * toilet information
+         */
+        $stmtArray[] = new StatementImpl(
+            new NamedNodeImpl($placeUri),
+            new NamedNodeImpl($bvlNamespaceUrl . 'toiletteVorhanden'),
+            new LiteralImpl(preg_replace('/\s\s+/', ' ', $placeEntry['Toilette in der Einrichtung vorhanden']))
+        );
+        $stmtArray[] = new StatementImpl(
+            new NamedNodeImpl($placeUri),
+            new NamedNodeImpl($bvlNamespaceUrl . 'toiletteRollstuhlgerecht'),
+            new LiteralImpl(preg_replace('/\s\s+/', ' ', $placeEntry['Toilette ist rollstuhlgerecht']))
         );
     }
 
