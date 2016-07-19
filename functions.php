@@ -46,19 +46,20 @@ function createRDFTurtleFile($filename, array $infoArray)
         $placeUri = str_replace(
             array(
                 ' ',     'ß',  'ä',  'Ä',  'ü',  'Ü',  'ö',  'Ö',  '<br-/>', '&uuml;', '&auml;', '&ouml;', '"', 'eacute;', '/',
-                'ouml;', 'auml;', 'uuml;', ',', "'", '>', '<', '`', '´'
+                'ouml;', 'auml;', 'uuml;', ',', "'", '>', '<', '`', '´', '(', ')'
             ),
             array(
                 '-',     'ss', 'ae', 'ae', 'ue', 'ue', 'oe', 'oe', '',       'ue',     'ae',     'oe',     '',  'e',       '_',
-                'oe',    'ae',    'ue',    '-', '_', '-', '-', '-', '-'
+                'oe',    'ae',    'ue',    '-', '_', '', '', '', '', '', ''
             ),
             trim(
                 preg_replace('/\s\s+/', ' ', strtolower($placeEntry['Titel']))
             )
         );
-        $placeUri = $bvlRootUrl . str_replace(array('&', ), array('-and-',), $placeUri);
+        $placeUri = $bvlRootUrl . str_replace(array('&'), array('-and-'), $placeUri);
 
         // title
+        $placeEntry['Titel'] = addslashes($placeEntry['Titel']);
         $stmtArray[] = new StatementImpl(
             new NamedNodeImpl($placeUri),
             new NamedNodeImpl($bvlNamespaceUrl . 'titel'),
