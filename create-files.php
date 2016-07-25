@@ -149,9 +149,9 @@ foreach ($htmlPages as $url => $category) {
 
         // lift fully accessable for wheelchair users
         if (false !== strpos($entry, '3333.gif')) {
-            $extractedData[$key]['Aufzug ist rollstuhlgerecht'] = 'ja';
+            $extractedData[$key]['Personenaufzug ist rollstuhlgerecht'] = 'ja';
         } else {
-           $extractedData[$key]['Aufzug ist rollstuhlgerecht'] = 'nein';
+           $extractedData[$key]['Personenaufzug ist rollstuhlgerecht'] = 'nein';
         }
 
         // lift for persons available
