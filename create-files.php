@@ -280,7 +280,7 @@ foreach ($extractedData as $key => $extractedEntry) {
             $extractedEntry['Stufen-bis-Aufzug-in-der-Einrichtung-vorhanden'] = getBinaryAnswer($originalEntry[55]);
             $extractedEntry['Aufzug-Breite-Innenkabine-cm'] = $originalEntry[57];
             $extractedEntry['Aufzug-Tiefe-Innenkabine-cm'] = $originalEntry[58];
-            $extractedEntry['Aufzug-Hoehe-oberster-Bedienknopf-in-Innenkabine cm'] = $originalEntry[59];
+            $extractedEntry['Aufzug-Hoehe-oberster-Bedienknopf-in-Innenkabine-cm'] = $originalEntry[59];
             $extractedEntry['Aufzug-Hoehe-oberster-Bedienknopf-außerhalb-cm'] = $originalEntry[60];
             $extractedEntry['Aufzug-Ort-Aufenthaltsort-Aufzugsberechtigter'] = $originalEntry[61];
             /*
@@ -326,5 +326,8 @@ echo PHP_EOL . PHP_EOL . '----------';
 // Generate CSV file
 createCSVFile('le-online-extracted-places.csv', $finalData);
 
-// Generate NT file
-createRDFTurtleFile('le-online-extracted-places.nt', $finalData);
+// Generate TTL file
+createRDFTurtleFile('le-online-extracted-places.ttl', $finalData);
+
+// Generate TTL file which contains
+createEnrichedRDFFile('enriched-places-rdf.ttl', $finalData);

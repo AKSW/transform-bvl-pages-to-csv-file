@@ -48,24 +48,7 @@ function createRDFTurtleFile($filename, array $infoArray)
     $geoNs = 'http://www.w3.org/2003/01/geo/wgs84_pos#';
 
     foreach ($infoArray as $placeEntry) {
-
-        /*
-         * generate good title for the URL later on (URL encoded, but still human readable)
-         */
-        $placeUri = str_replace(
-            array(
-                ' ',     'ß',  'ä',  'Ä',  'ü',  'Ü',  'ö',  'Ö',  '<br-/>', '&uuml;', '&auml;', '&ouml;', '"', 'eacute;', '/',     '\\',
-                'ouml;', 'auml;', 'uuml;', ',', "'", '>', '<', '`', '´', '(', ')'
-            ),
-            array(
-                '-',     'ss', 'ae', 'ae', 'ue', 'ue', 'oe', 'oe', '',       'ue',     'ae',     'oe',     '',  'e',       '_',     '_',
-                'oe',    'ae',    'ue',    '-', '_', '', '', '', '', '', ''
-            ),
-            trim(
-                preg_replace('/\s\s+/', ' ', strtolower($placeEntry['Titel']))
-            )
-        );
-        $placeUri = $bvlRootUrl . str_replace(array('&'), array('-and-'), $placeUri);
+        $placeUri = generateBuildingUri($placeEntry['Titel'], $bvlRootUrl);
 
         // title
         $placeEntry['Titel'] = addslashes($placeEntry['Titel']);
@@ -151,7 +134,211 @@ function createRDFTurtleFile($filename, array $infoArray)
         __DIR__ . '/'. $filename
     );
 
-    echo PHP_EOL . 'N-Triples file '. $filename .' with '. count($stmtArray) .' triples created.';
+    echo PHP_EOL . 'File '. $filename .' with '. count($stmtArray) .' triples created.';
+}
+
+/**
+ * Generates RDF/Turtle file
+ *
+ * @param string $filename
+ * @param array $infoArray
+ */
+function createEnrichedRDFFile($filename, array $infoArray)
+{
+    $stmtArray = array();
+    $rootUri = 'http://le-online.de/place/';
+    $rdfUri = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#';
+    $liftOntologyUri = 'https://raw.githubusercontent.com/AKSW/leds-asp-f-ontologies/'
+        . 'master/ontologies/elevator/ontology.ttl#';
+
+    foreach ($infoArray as $placeEntry) {
+
+        // ignore buildings with no elevator
+        if ('nein' == $placeEntry['Aufzug-in-der-Einrichtung-vorhanden']) {
+            continue;
+        }
+
+        /*
+         * Basic structure:
+         * Building => Elevator => ElevatorDoor
+         *                      => ElevatorShaft
+         *                      => ElevatorWall
+         *                      => ElevatorCabine
+         */
+        $buildingUri = generateBuildingUri($placeEntry['Titel'], $rootUri);
+        $elevatorUri = $buildingUri . '/elevator';
+        $elevatorShaftUri = $buildingUri . '/elevator/shaft';
+        $elevatorCabineUri = $buildingUri . '/elevator/cabine';
+        $elevatorDoorUri = $buildingUri . '/elevator/door';
+        $elevatorWallUri = $buildingUri . '/elevator/wall';
+
+        // b rdf:type :Building
+        $stmtArray[] = new StatementImpl(
+            new NamedNodeImpl($buildingUri),
+            new NamedNodeImpl($rdfUri . 'type'),
+            new NamedNodeImpl($liftOntologyUri . 'Building')
+        );
+
+        // e rdf:type :Elevator
+        $stmtArray[] = new StatementImpl(
+            new NamedNodeImpl($elevatorUri),
+            new NamedNodeImpl($rdfUri . 'type'),
+            new NamedNodeImpl($liftOntologyUri . 'Elevator')
+        );
+
+        // s rdf:type :ElevatorShaft
+        $stmtArray[] = new StatementImpl(
+            new NamedNodeImpl($elevatorShaftUri),
+            new NamedNodeImpl($rdfUri . 'type'),
+            new NamedNodeImpl($liftOntologyUri . 'ElevatorShaft')
+        );
+
+        // c rdf:type :ElevatorCabine
+        $stmtArray[] = new StatementImpl(
+            new NamedNodeImpl($elevatorCabineUri),
+            new NamedNodeImpl($rdfUri . 'type'),
+            new NamedNodeImpl($liftOntologyUri . 'ElevatorCabine')
+        );
+
+        // d rdf:type :ElevatorDoor
+        $stmtArray[] = new StatementImpl(
+            new NamedNodeImpl($elevatorDoorUri),
+            new NamedNodeImpl($rdfUri . 'type'),
+            new NamedNodeImpl($liftOntologyUri . 'ElevatorDoor')
+        );
+
+        // w rdf:type :ElevatorWall
+        $stmtArray[] = new StatementImpl(
+            new NamedNodeImpl($elevatorWallUri),
+            new NamedNodeImpl($rdfUri . 'type'),
+            new NamedNodeImpl($liftOntologyUri . 'ElevatorWall')
+        );
+
+        /*
+         * relations
+         */
+
+        // b hasElevator e
+        $stmtArray[] = new StatementImpl(
+            new NamedNodeImpl($buildingUri),
+            new NamedNodeImpl($liftOntologyUri . 'hasElevator'),
+            new NamedNodeImpl($elevatorUri)
+        );
+
+        // e hasElevatorShaft s
+        $stmtArray[] = new StatementImpl(
+            new NamedNodeImpl($elevatorUri),
+            new NamedNodeImpl($liftOntologyUri . 'hasElevatorShaft'),
+            new NamedNodeImpl($elevatorShaftUri)
+        );
+
+        // e hasElevatorShaft c
+        $stmtArray[] = new StatementImpl(
+            new NamedNodeImpl($elevatorUri),
+            new NamedNodeImpl($liftOntologyUri . 'hasElevatorCabine'),
+            new NamedNodeImpl($elevatorCabineUri)
+        );
+
+        // e hasElevatorShaft d
+        $stmtArray[] = new StatementImpl(
+            new NamedNodeImpl($elevatorUri),
+            new NamedNodeImpl($liftOntologyUri . 'hasElevatorDoor'),
+            new NamedNodeImpl($elevatorDoorUri)
+        );
+
+        // e hasElevatorShaft w
+        $stmtArray[] = new StatementImpl(
+            new NamedNodeImpl($elevatorUri),
+            new NamedNodeImpl($liftOntologyUri . 'hasElevatorWall'),
+            new NamedNodeImpl($elevatorWallUri)
+        );
+
+        /*
+         * properties
+         */
+        // elevator door
+        $stmtArray[] = new StatementImpl(
+            new NamedNodeImpl($elevatorDoorUri),
+            new NamedNodeImpl($liftOntologyUri . 'width'),
+            new LiteralImpl(
+                (string)$placeEntry['Aufzug-Tuerbreite-cm'],
+                new NamedNodeImpl('http://www.w3.org/2001/XMLSchema#float')
+            )
+        );
+        // elevator cabine
+        $stmtArray[] = new StatementImpl(
+            new NamedNodeImpl($elevatorCabineUri),
+            new NamedNodeImpl($liftOntologyUri . 'width'),
+            new LiteralImpl(
+                (string)$placeEntry['Aufzug-Breite-Innenkabine-cm'],
+                new NamedNodeImpl('http://www.w3.org/2001/XMLSchema#float')
+            )
+        );
+        $stmtArray[] = new StatementImpl(
+            new NamedNodeImpl($elevatorCabineUri),
+            new NamedNodeImpl($liftOntologyUri . 'depth'),
+            new LiteralImpl(
+                (string)$placeEntry['Aufzug-Tiefe-Innenkabine-cm'],
+                new NamedNodeImpl('http://www.w3.org/2001/XMLSchema#float')
+            )
+        );
+        $stmtArray[] = new StatementImpl(
+            new NamedNodeImpl($elevatorCabineUri),
+            new NamedNodeImpl($liftOntologyUri . 'highestHeightOfControlPanelButton'),
+            new LiteralImpl(
+                (string)$placeEntry['Aufzug-Hoehe-oberster-Bedienknopf-in-Innenkabine-cm'],
+                new NamedNodeImpl('http://www.w3.org/2001/XMLSchema#float')
+            )
+        );
+        // before elevator cabine
+        $stmtArray[] = new StatementImpl(
+            new NamedNodeImpl($elevatorCabineUri),
+            new NamedNodeImpl($liftOntologyUri . 'highestHeightOfControlPanelButtonBeforeCabine'),
+            new LiteralImpl(
+                (string)$placeEntry['Aufzug-Hoehe-oberster-Bedienknopf-in-Innenkabine-cm'],
+                new NamedNodeImpl('http://www.w3.org/2001/XMLSchema#float')
+            )
+        );
+    }
+
+    // serialize statement array to n-triples and store it as file
+    $serializerFactory = new SerializerFactoryImpl();
+    $serializer = $serializerFactory->createSerializerFor('n-triples');
+    $serializer->serializeIteratorToStream(
+        new ArrayStatementIteratorImpl($stmtArray),
+        __DIR__ . '/'. $filename
+    );
+
+    echo PHP_EOL . 'File '. $filename .' with '. count($stmtArray) .' triples created.';
+}
+
+/**
+ * By given root URI and raw building title, an URI will be generated.
+ *
+ * @param string $rawTitle
+ * @param string $rootUri
+ * @return string Building URI
+ */
+function generateBuildingUri($rawTitle, $rootUri)
+{
+    /*
+     * generate good title for the URL later on (URL encoded, but still human readable)
+     */
+    $buildingUri = str_replace(
+        array(
+            ' ',     'ß',  'ä',  'Ä',  'ü',  'Ü',  'ö',  'Ö',  '<br-/>', '&uuml;', '&auml;', '&ouml;', '"', 'eacute;', '/',     '\\',
+            'ouml;', 'auml;', 'uuml;', ',', "'", '>', '<', '`', '´', '(', ')'
+        ),
+        array(
+            '-',     'ss', 'ae', 'ae', 'ue', 'ue', 'oe', 'oe', '',       'ue',     'ae',     'oe',     '',  'e',       '_',     '_',
+            'oe',    'ae',    'ue',    '-', '_', '', '', '', '', '', ''
+        ),
+        trim(
+            preg_replace('/\s\s+/', ' ', strtolower($rawTitle))
+        )
+    );
+
+    return $rootUri . str_replace(array('&'), array('-and-'), $buildingUri);
 }
 
 /**
