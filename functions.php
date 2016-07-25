@@ -54,11 +54,11 @@ function createRDFTurtleFile($filename, array $infoArray)
          */
         $placeUri = str_replace(
             array(
-                ' ',     'ß',  'ä',  'Ä',  'ü',  'Ü',  'ö',  'Ö',  '<br-/>', '&uuml;', '&auml;', '&ouml;', '"', 'eacute;', '/',
+                ' ',     'ß',  'ä',  'Ä',  'ü',  'Ü',  'ö',  'Ö',  '<br-/>', '&uuml;', '&auml;', '&ouml;', '"', 'eacute;', '/',     '\\',
                 'ouml;', 'auml;', 'uuml;', ',', "'", '>', '<', '`', '´', '(', ')'
             ),
             array(
-                '-',     'ss', 'ae', 'ae', 'ue', 'ue', 'oe', 'oe', '',       'ue',     'ae',     'oe',     '',  'e',       '_',
+                '-',     'ss', 'ae', 'ae', 'ue', 'ue', 'oe', 'oe', '',       'ue',     'ae',     'oe',     '',  'e',       '_',     '_',
                 'oe',    'ae',    'ue',    '-', '_', '', '', '', '', '', ''
             ),
             trim(
@@ -78,11 +78,11 @@ function createRDFTurtleFile($filename, array $infoArray)
         /*
          * address information
          */
-        $placeEntry['Straße'] = addslashes($placeEntry['Straße']);
+        $placeEntry['Straße'] = addslashes($placeEntry['Strasse']);
         $stmtArray[] = new StatementImpl(
             new NamedNodeImpl($placeUri),
             new NamedNodeImpl($bvlNamespaceUrl . 'strasse'),
-            new LiteralImpl(preg_replace('/\s\s+/', ' ', $placeEntry['Straße']))
+            new LiteralImpl(preg_replace('/\s\s+/', ' ', $placeEntry['Strasse']))
         );
         $stmtArray[] = new StatementImpl(
             new NamedNodeImpl($placeUri),
@@ -111,7 +111,7 @@ function createRDFTurtleFile($filename, array $infoArray)
         $stmtArray[] = new StatementImpl(
             new NamedNodeImpl($placeUri),
             new NamedNodeImpl($bvlNamespaceUrl . 'eingangsbereichIstRollstuhlgerecht'),
-            new LiteralImpl(preg_replace('/\s\s+/', ' ', $placeEntry['Eingangsbereich ist rollstuhlgerecht']))
+            new LiteralImpl(preg_replace('/\s\s+/', ' ', $placeEntry['Eingangsbereich-rollstuhlgerecht']))
         );
 
         /*
@@ -119,13 +119,13 @@ function createRDFTurtleFile($filename, array $infoArray)
          */
         $stmtArray[] = new StatementImpl(
             new NamedNodeImpl($placeUri),
-            new NamedNodeImpl($bvlNamespaceUrl . 'personenAufzugVorhanden'),
-            new LiteralImpl(preg_replace('/\s\s+/', ' ', $placeEntry['Personenaufzug vorhanden']))
+            new NamedNodeImpl($bvlNamespaceUrl . 'personenaufzugVorhanden'),
+            new LiteralImpl(preg_replace('/\s\s+/', ' ', $placeEntry['Personenaufzug-vorhanden']))
         );
         $stmtArray[] = new StatementImpl(
             new NamedNodeImpl($placeUri),
-            new NamedNodeImpl($bvlNamespaceUrl . 'aufzugIstRollstuhlgerecht'),
-            new LiteralImpl(preg_replace('/\s\s+/', ' ', $placeEntry['Aufzug ist rollstuhlgerecht']))
+            new NamedNodeImpl($bvlNamespaceUrl . 'personenaufzugIstRollstuhlgerecht'),
+            new LiteralImpl(preg_replace('/\s\s+/', ' ', $placeEntry['Personenaufzug-rollstuhlgerecht']))
         );
 
         /*
@@ -134,12 +134,12 @@ function createRDFTurtleFile($filename, array $infoArray)
         $stmtArray[] = new StatementImpl(
             new NamedNodeImpl($placeUri),
             new NamedNodeImpl($bvlNamespaceUrl . 'toiletteVorhanden'),
-            new LiteralImpl(preg_replace('/\s\s+/', ' ', $placeEntry['Toilette in der Einrichtung vorhanden']))
+            new LiteralImpl(preg_replace('/\s\s+/', ' ', $placeEntry['Toilette-in-der-Einrichtung-vorhanden']))
         );
         $stmtArray[] = new StatementImpl(
             new NamedNodeImpl($placeUri),
             new NamedNodeImpl($bvlNamespaceUrl . 'toiletteRollstuhlgerecht'),
-            new LiteralImpl(preg_replace('/\s\s+/', ' ', $placeEntry['Toilette ist rollstuhlgerecht']))
+            new LiteralImpl(preg_replace('/\s\s+/', ' ', $placeEntry['Toilette-rollstuhlgerecht']))
         );
     }
 

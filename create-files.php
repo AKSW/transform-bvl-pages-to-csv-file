@@ -137,39 +137,39 @@ foreach ($htmlPages as $url => $category) {
 
         // entry area fully accessible for wheelchair users
         if (false !== strpos($entry, '1111.gif')) {
-            $extractedData[$key]['Eingangsbereich ist rollstuhlgerecht'] = 'vollständig';
+            $extractedData[$key]['Eingangsbereich-rollstuhlgerecht'] = 'vollständig';
         } else {
             // entry area partly accessible for wheelchair users
             if (false !== strpos($entry, '2222.gif')) {
-                $extractedData[$key]['Eingangsbereich ist rollstuhlgerecht'] = 'teilweise';
+                $extractedData[$key]['Eingangsbereich-rollstuhlgerecht'] = 'teilweise';
             } else {
-                $extractedData[$key]['Eingangsbereich ist rollstuhlgerecht'] = 'nein';
+                $extractedData[$key]['Eingangsbereich-rollstuhlgerecht'] = 'nein';
             }
         }
 
         // lift fully accessable for wheelchair users
         if (false !== strpos($entry, '3333.gif')) {
-            $extractedData[$key]['Personenaufzug ist rollstuhlgerecht'] = 'ja';
+            $extractedData[$key]['Personenaufzug-rollstuhlgerecht'] = 'ja';
         } else {
-           $extractedData[$key]['Personenaufzug ist rollstuhlgerecht'] = 'nein';
+           $extractedData[$key]['Personenaufzug-rollstuhlgerecht'] = 'nein';
         }
 
         // lift for persons available
         if (false !== strpos($entry, '4444.gif')) {
-            $extractedData[$key]['Personenaufzug vorhanden'] = 'ja';
+            $extractedData[$key]['Personenaufzug-vorhanden'] = 'ja';
         } else {
-            $extractedData[$key]['Personenaufzug vorhanden'] = 'nein';
+            $extractedData[$key]['Personenaufzug-vorhanden'] = 'nein';
         }
 
         // WC fully accessable for wheelchair users
         if (false !== strpos($entry, '5555.gif')) {
-            $extractedData[$key]['Toilette ist rollstuhlgerecht'] = 'vollständig';
+            $extractedData[$key]['Toilette-rollstuhlgerecht'] = 'vollständig';
         } else {
             // WC partly accessable for wheelchair users
             if (false !== strpos($entry, '6666.gif')) {
-                $extractedData[$key]['Toilette ist rollstuhlgerecht'] = 'teilweise';
+                $extractedData[$key]['Toilette-rollstuhlgerecht'] = 'teilweise';
             } else {
-                $extractedData[$key]['Toilette ist rollstuhlgerecht'] = 'nein';
+                $extractedData[$key]['Toilette-rollstuhlgerecht'] = 'nein';
             }
         }
     }
@@ -203,7 +203,8 @@ foreach ($extractedData as $key => $extractedEntry) {
             /**
              * Allgemeine Informationen
              */
-            $extractedEntry['Straße'] = $street;
+            $extractedEntry['Titel'] = str_replace("'", "\'", $extractedEntry['Titel']);
+            $extractedEntry['Strasse'] = $street;
             $extractedEntry['PLZ'] = $originalEntry[9];
             $extractedEntry['Ort'] = $originalEntry[10];
             $extractedEntry['Oeffnungszeiten'] = $originalEntry[19];
@@ -214,7 +215,7 @@ foreach ($extractedData as $key => $extractedEntry) {
             // ask for long and lat for a given address (cached access)
             list($long, $lat) = getLongLatForAddress(
                 $extractedEntry['Titel'],
-                $extractedEntry['Straße'],
+                $extractedEntry['Strasse'],
                 $extractedEntry['PLZ'],
                 $extractedEntry['Ort']
             );
@@ -225,93 +226,93 @@ foreach ($extractedData as $key => $extractedEntry) {
             /*
              * Parkplatz
              */
-            $extractedEntry['Parkplatz vorhanden'] = getBinaryAnswer($originalEntry[20]);
-            $extractedEntry['Parkplatz vor Einrichtung vorhanden'] = getBinaryAnswer($originalEntry[21]);
-            $extractedEntry['Anzahl Behindertenparkplätze auf Parkplatz vor Einrichtung'] = $originalEntry[22];
-            $extractedEntry['Hauseigener Parkplatz vorhanden'] = getBinaryAnswer($originalEntry[23]);
-            $extractedEntry['Anzahl Behindertenparkplätze auf hauseigenem Parkplatz'] = $originalEntry[25];
-            $extractedEntry['Ort des hauseigenen Parkplatzes'] = $originalEntry[24];
+            $extractedEntry['Parkplatz-vorhanden'] = getBinaryAnswer($originalEntry[20]);
+            $extractedEntry['Parkplatz-vor-Einrichtung-vorhanden'] = getBinaryAnswer($originalEntry[21]);
+            $extractedEntry['Anzahl-Behindertenparkplaetze-v-Einrichtung'] = $originalEntry[22];
+            $extractedEntry['Hauseigener-Parkplatz-vorhanden'] = getBinaryAnswer($originalEntry[23]);
+            $extractedEntry['Anzahl-Behindertenparkplaetze-auf-hauseigenem-Parkplatz'] = $originalEntry[25];
+            $extractedEntry['Ort-hauseigener-Parkplatz'] = $originalEntry[24];
             /*
              * Eingangsbereich
              */
-            $extractedEntry['Stufen bis Eingang vorhanden'] = getBinaryAnswer($originalEntry[26]);
-            $extractedEntry['Anzahl der Stufen bis Eingang'] = $originalEntry[27];
-            $extractedEntry['Höhe einer Stufe bis Eingang (cm)'] = $originalEntry[28];
-            $extractedEntry['Eingangsbereich: Handlauf durchgehend links vorhanden'] = getBinaryAnswer($originalEntry[29]);
-            $extractedEntry['Eingangsbereich: Handlauf durchgehend rechts vorhanden'] = getBinaryAnswer($originalEntry[30]);
-            $extractedEntry['Eingangsbereich: Farbliche Markierung der ersten und letzten Stufe vorhanden'] = getBinaryAnswer($originalEntry[31]);
-            $extractedEntry['Alternativer Eingang für Rollstuhlfahrer vorhanden'] = getBinaryAnswer($originalEntry[32]);
-            $extractedEntry['Ort des alternativen Eingangs für Rollstuhlfahrer'] = $originalEntry[33];
+            $extractedEntry['Stufen-bis-Eingang-vorhanden'] = getBinaryAnswer($originalEntry[26]);
+            $extractedEntry['Anzahl-der-Stufen-bis-Eingang'] = $originalEntry[27];
+            $extractedEntry['Hoehe-einer-Stufe-bis-Eingang-cm'] = $originalEntry[28];
+            $extractedEntry['Eingang-Handlauf-durchgehend-links-vorhanden'] = getBinaryAnswer($originalEntry[29]);
+            $extractedEntry['Eingang-Handlauf-durchgehend-rechts-vorhanden'] = getBinaryAnswer($originalEntry[30]);
+            $extractedEntry['Eingang-Farbliche-Markierung-erste-u-letzte-Stufe-vorhanden'] = getBinaryAnswer($originalEntry[31]);
+            $extractedEntry['Alternativer-Eingang-fuer-Rollstuhlfahrer-vorhanden'] = getBinaryAnswer($originalEntry[32]);
+            $extractedEntry['Ort-alternativer-Eingang-fuer-Rollstuhlfahrer'] = $originalEntry[33];
             /*
              * Rampe im Eingangsbereich
              */
-            $extractedEntry['Rampe vor Eingang vorhanden'] = getBinaryAnswer($originalEntry[34]);
-            $extractedEntry['Länge der Rampe (cm)'] = $originalEntry[35];
-            $extractedEntry['Höhe der Rampe (cm)'] = $originalEntry[36];
-            $extractedEntry['Breite der Rampe (cm)'] = $originalEntry[37];
-            $extractedEntry['Rampe: Handlauf durchgehend links vorhanden'] = getBinaryAnswer($originalEntry[38]);
-            $extractedEntry['Rampe: Handlauf durchgehend rechts vorhanden'] = getBinaryAnswer($originalEntry[39]);
-            $extractedEntry['Rampe: Farbliche Markierung von Beginn und Ende der Rampe vorhanden'] = getBinaryAnswer($originalEntry[40]);
+            $extractedEntry['Rampe-vor-Eingang-vorhanden'] = getBinaryAnswer($originalEntry[34]);
+            $extractedEntry['Laenge-der-Rampe-cm'] = $originalEntry[35];
+            $extractedEntry['Hoehe-der-Rampe-cm'] = $originalEntry[36];
+            $extractedEntry['Breite-der-Rampe-cm'] = $originalEntry[37];
+            $extractedEntry['Rampe-Handlauf-durchgehend-links-vorhanden'] = getBinaryAnswer($originalEntry[38]);
+            $extractedEntry['Rampe-Handlauf-durchgehend-rechts-vorhanden'] = getBinaryAnswer($originalEntry[39]);
+            $extractedEntry['Rampe-Farbliche-Markierung-an-Beginn-u-Ende-der-Rampe-vorhanden'] = getBinaryAnswer($originalEntry[40]);
             /*
              * Klingel im Eingangsbereich
              */
-            $extractedEntry['Eingangsbereich: Klingel vorhanden'] = getBinaryAnswer($originalEntry[41]);
-            $extractedEntry['Eingangsbereich: Ort der Klingel'] = $originalEntry[42];
-            $extractedEntry['Eingangsbereich: Klingel mit Wechselsprechanlage vorhanden'] = getBinaryAnswer($originalEntry[43]);
-            $extractedEntry['Eingangsbereich: Höhe oberster Bedienknopf von Klingel (cm)'] = $originalEntry[44];
+            $extractedEntry['Eingang-Klingel-vorhanden'] = getBinaryAnswer($originalEntry[41]);
+            $extractedEntry['Eingang-Ort-der-Klingel'] = $originalEntry[42];
+            $extractedEntry['Eingang-Klingel-mit-Wechselsprechanlage-vorhanden'] = getBinaryAnswer($originalEntry[43]);
+            $extractedEntry['Eingang-Hoehe-oberster-Bedienknopf-von-Klingel-cm'] = $originalEntry[44];
             /*
-             * Tür im Eingangsbereich
+             * Tuer im Eingangsbereich
              */
-            $extractedEntry['Kleinste Türbreite bis Erreichen der Einrichtung (cm)'] = $originalEntry[45];
-            $extractedEntry['Art der Tür im Eingangsbereich: Automatische Tür'] = getBinaryAnswer($originalEntry[46]);
-            $extractedEntry['Art der Tür im Eingangsbereich: Halbautomatische Tür'] = getBinaryAnswer($originalEntry[47]);
-            $extractedEntry['Art der Tür im Eingangsbereich: Drehtür'] = getBinaryAnswer($originalEntry[48]);
-            $extractedEntry['Art der Tür im Eingangsbereich: Schiebetür'] = getBinaryAnswer($originalEntry[49]);
-            $extractedEntry['Art der Tür im Eingangsbereich: Drehflügeltür'] = getBinaryAnswer($originalEntry[50]);
-            $extractedEntry['Art der Tür im Eingangsbereich: Pendeltür'] = getBinaryAnswer($originalEntry[51]);
-            $extractedEntry['Art der Tür im Eingangsbereich: andere Türart'] = getBinaryAnswer($originalEntry[52]);
+            $extractedEntry['Kleinste-Tuerbreite-bis-Erreichen-der-Einrichtung-cm'] = $originalEntry[45];
+            $extractedEntry['Tuerart-am-Eingang-Automatische-Tuer'] = getBinaryAnswer($originalEntry[46]);
+            $extractedEntry['Tuerart-am-Eingang-Halbautomatische-Tuer'] = getBinaryAnswer($originalEntry[47]);
+            $extractedEntry['Tuerart-am-Eingang-Drehtuer'] = getBinaryAnswer($originalEntry[48]);
+            $extractedEntry['Tuerart-am-Eingang-Schiebetuer'] = getBinaryAnswer($originalEntry[49]);
+            $extractedEntry['Tuerart-am-Eingang-Drehfluegeltuer'] = getBinaryAnswer($originalEntry[50]);
+            $extractedEntry['Tuerart-am-Eingang-Pendeltuer'] = getBinaryAnswer($originalEntry[51]);
+            $extractedEntry['Tuerart-am-Eingang-andere-Tuerart'] = getBinaryAnswer($originalEntry[52]);
             /*
              * Aufzug in der Einrichtung
              */
-            $extractedEntry['Aufzug in der Einrichtung vorhanden'] = getBinaryAnswer($originalEntry[53]);
-            $extractedEntry['Anzahl der Stufen bis Aufzug in der Einrichtung'] = $originalEntry[54];
-            $extractedEntry['Aufzug: Türbreite (cm)'] = $originalEntry[56];
-            $extractedEntry['Stufen bis Aufzug in der Einrichtung vorhanden'] = getBinaryAnswer($originalEntry[55]);
-            $extractedEntry['Aufzug: Breite Innenkabine (cm)'] = $originalEntry[57];
-            $extractedEntry['Aufzug: Tiefe Innenkabine (cm)'] = $originalEntry[58];
-            $extractedEntry['Aufzug: Höhe oberster Bedienknopf in Innenkabine (cm)'] = $originalEntry[59];
-            $extractedEntry['Aufzug: Höhe oberster Bedienknopf außerhalb (cm)'] = $originalEntry[60];
-            $extractedEntry['Aufzug: Ort Aufenthaltsort Aufzugsberechtigter'] = $originalEntry[61];
+            $extractedEntry['Aufzug-in-der-Einrichtung-vorhanden'] = getBinaryAnswer($originalEntry[53]);
+            $extractedEntry['Anzahl-der-Stufen-bis-Aufzug-in-der-Einrichtung'] = $originalEntry[54];
+            $extractedEntry['Aufzug-Tuerbreite-cm'] = $originalEntry[56];
+            $extractedEntry['Stufen-bis-Aufzug-in-der-Einrichtung-vorhanden'] = getBinaryAnswer($originalEntry[55]);
+            $extractedEntry['Aufzug-Breite-Innenkabine-cm'] = $originalEntry[57];
+            $extractedEntry['Aufzug-Tiefe-Innenkabine-cm'] = $originalEntry[58];
+            $extractedEntry['Aufzug-Hoehe-oberster-Bedienknopf-in-Innenkabine cm'] = $originalEntry[59];
+            $extractedEntry['Aufzug-Hoehe-oberster-Bedienknopf-außerhalb-cm'] = $originalEntry[60];
+            $extractedEntry['Aufzug-Ort-Aufenthaltsort-Aufzugsberechtigter'] = $originalEntry[61];
             /*
              * Toilette in der Einrichtung
              */
-            $extractedEntry['Toilette in der Einrichtung vorhanden'] = getBinaryAnswer($originalEntry[63]);
-            $extractedEntry['Toilette ist mit Piktogramm als Behindertentoilette gekennzeichnet'] = getBinaryAnswer($originalEntry[64]);
-            $extractedEntry['Stufen bis Toilette in Einrichtung vorhanden'] = getBinaryAnswer($originalEntry[65]);
-            $extractedEntry['Anzahl Stufen bis Toilette in Einrichtung'] = $originalEntry[66];
-            $extractedEntry['Höhe der Stufen bis Toilette in Einrichtung (cm)'] = $originalEntry[67];
-            $extractedEntry['Stufen bis Toilette: Handlauf durchgehend links vorhanden'] = getBinaryAnswer($originalEntry[68]);
-            $extractedEntry['Stufen bis Toilette: Handlauf durchgehend rechts vorhanden'] = getBinaryAnswer($originalEntry[69]);
-            $extractedEntry['Stufen bis Toilette: Farbliche Markierung erste und letzte Stufe'] = getBinaryAnswer($originalEntry[70]);
-            $extractedEntry['Türbreite der Toilettenkabine (cm)'] = $originalEntry[71];
-            $extractedEntry['Toilettentür von außen entriegelbar'] = getBinaryAnswer($originalEntry[72]);
-            $extractedEntry['Notklingel in Toilettenkabine vorhanden'] = getBinaryAnswer($originalEntry[73]);
-            $extractedEntry['Höhe Notklingel in Toilettenkabine'] = $originalEntry[74];
-            $extractedEntry['Bewegungsfläche vor WC: Tiefe (cm)'] = $originalEntry[75];
-            $extractedEntry['Bewegungsfläche vor WC: Breite (cm)'] = $originalEntry[76];
-            $extractedEntry['Bewegungsfläche links vom WC: Tiefe (cm)'] = $originalEntry[77];
-            $extractedEntry['Bewegungsfläche links vom WC: Breite (cm)'] = $originalEntry[78];
-            $extractedEntry['Bewegungsfläche rechts vom WC: Tiefe (cm)'] = $originalEntry[79];
-            $extractedEntry['Bewegungsfläche rechts vom WC: Breite (cm)'] = $originalEntry[80];
-            $extractedEntry['Aktivierung Amatur Waschbecken in Toilettenkabine über Fotozelle möglich'] = getBinaryAnswer($originalEntry[84]);
-            $extractedEntry['Aktivierung Amatur Waschbecken in Toilettenkabine über Hebelarm möglich'] = getBinaryAnswer($originalEntry[85]);
+            $extractedEntry['Toilette-in-der-Einrichtung-vorhanden'] = getBinaryAnswer($originalEntry[63]);
+            $extractedEntry['Toilette-mit-Piktogramm-als-Behindertentoilette-gekennzeichnet'] = getBinaryAnswer($originalEntry[64]);
+            $extractedEntry['Stufen-bis-Toilette-in-Einrichtung-vorhanden'] = getBinaryAnswer($originalEntry[65]);
+            $extractedEntry['Anzahl-Stufen-bis-Toilette-in-Einrichtung'] = $originalEntry[66];
+            $extractedEntry['Hoehe-der-Stufen-bis-Toilette-in-Einrichtung-cm'] = $originalEntry[67];
+            $extractedEntry['Stufen-bis-Toilette:-Handlauf-durchgehend-links-vorhanden'] = getBinaryAnswer($originalEntry[68]);
+            $extractedEntry['Stufen-bis-Toilette:-Handlauf-durchgehend-rechts-vorhanden'] = getBinaryAnswer($originalEntry[69]);
+            $extractedEntry['Stufen-bis-Toilette-Farbliche-Markierung-erste-u-letzte-Stufe'] = getBinaryAnswer($originalEntry[70]);
+            $extractedEntry['Tuerbreite-der-Toilettenkabine-cm'] = $originalEntry[71];
+            $extractedEntry['ToilettenTuer-von-außen-entriegelbar'] = getBinaryAnswer($originalEntry[72]);
+            $extractedEntry['Notklingel-in-Toilettenkabine-vorhanden'] = getBinaryAnswer($originalEntry[73]);
+            $extractedEntry['Hoehe-Notklingel-in-Toilettenkabine'] = $originalEntry[74];
+            $extractedEntry['Bewegungsflaeche-vor-WC-Tiefe-cm'] = $originalEntry[75];
+            $extractedEntry['Bewegungsflaeche-vor-WC-Breite-cm'] = $originalEntry[76];
+            $extractedEntry['Bewegungsflaeche-links-vom-WC:-Tiefe-cm'] = $originalEntry[77];
+            $extractedEntry['Bewegungsflaeche-links-vom-WC:-Breite-cm'] = $originalEntry[78];
+            $extractedEntry['Bewegungsflaeche-rechts-vom-WC:-Tiefe-cm'] = $originalEntry[79];
+            $extractedEntry['Bewegungsflaeche-rechts-vom-WC:-Breite-cm'] = $originalEntry[80];
+            $extractedEntry['Aktivierung-Amatur-Waschbecken-Toilettenkabine-mit-Fotozelle'] = getBinaryAnswer($originalEntry[84]);
+            $extractedEntry['Aktivierung-Amatur-Waschbecken-Toilettenkabine-mit-Hebelarm'] = getBinaryAnswer($originalEntry[85]);
             /*
              * Hilfestellungen
              */
-            $extractedEntry['Besondere Hilfestellungen für Menschen mit Hörbehinderung vorhanden'] = getBinaryAnswer($originalEntry[109]);
-            $extractedEntry['Besondere Hilfestellungen für Menschen mit Seebhinderung und Blinde vorhanden'] = getBinaryAnswer($originalEntry[110]);
-            $extractedEntry['Allgemeine Hilfestellungen vor Ort vorhanden'] = getBinaryAnswer($originalEntry[111]);
-            $extractedEntry['Beschreibung Hilfestellungen vor Ort'] = $originalEntry[112];
+            $extractedEntry['Besondere-Hilfestellungen-f-Menschen-m-Hoerbehinderung-vorhanden'] = getBinaryAnswer($originalEntry[109]);
+            $extractedEntry['Besondere-Hilfestellungen-f-Menschen-m-Seebhind-Blinde-vorhanden'] = getBinaryAnswer($originalEntry[110]);
+            $extractedEntry['Allgemeine-Hilfestellungen-vor-Ort-vorhanden'] = getBinaryAnswer($originalEntry[111]);
+            $extractedEntry['Beschreibung-Hilfestellungen-vor-Ort'] = $originalEntry[112];
 
             $finalData[] = $extractedEntry;
 
