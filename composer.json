@@ -1,6 +1,7 @@
 {
     "name": "aksw/transform-bvl-pages-to-csv-file",
     "require": {
+        "gabordemooij/redbean": "4.*",
         "php-curl-class/php-curl-class": "4.*",
         "saft/saft-data": "0.2.*",
         "saft/saft-rdf": "0.2.*"

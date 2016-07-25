@@ -16,3 +16,7 @@ The following pages are covered currently:
 Published CSV- and NT file is licensed under the terms of [*Data licence Germany – attribution – version 2.0*](https://www.govdata.de/dl-de/by-2-0).
 
 Software source code is licensed under the terms of [*GPL 3.0*](http://www.gnu.org/licenses/gpl-3.0.en.html).
+
+## Usage infos
+
+If you want to run the script `create-files.php` you have to set your database connection in the `functions.php` file (look for the `R::setup` part). Furthermore, you need to run `composer update` to setup required vendors.

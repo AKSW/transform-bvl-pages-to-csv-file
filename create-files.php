@@ -12,63 +12,6 @@
 
 require 'vendor/autoload.php';
 
-/**
- * Unset empty array entries.
- *
- * @param array $array
- * @return array
- */
-function unsetEmptyEntry($array)
-{
-    foreach ($array as $key => $entry) {
-        if (is_array($entry)) {
-            $array[$key] = unsetEmptyEntry($entry);
-
-            if (empty($array[$key])) {
-                unset($array[$key]);
-            }
-
-        } elseif (is_array($entry) && 0 == count($entry)) {
-            unset($array[$key]);
-        } elseif ('' == $entry || empty($entry)) {
-            unset($array[$key]);
-        }
-    }
-
-    if (is_array($array) && 0 == count($array)) {
-        return '';
-    } else {
-        return $array;
-    }
-}
-
-/**
- * @param string $filepath
- * @return array
- */
-function loadCSVFileIntoArray($filepath)
-{
-    $file = fopen($filepath, 'r');
-    $lines = array();
-    while (($line = fgetcsv($file, 0, ';', '*')) !== FALSE) {
-      $lines[] = $line;
-    }
-    fclose($file);
-    return $lines;
-}
-
-/**
- * Helper function to handle invalid values such as 20000000 from outdated entries.
- *
- * @param int/string $value
- * @return string ja or nein
- */
-function getBinaryAnswer($value)
-{
-    $value = (int)$value;
-    return 1 == $value ? 'ja' : 'nein';
-}
-
 setlocale(LC_CTYPE, 'de_DE.UTF-8');
 
 /*
@@ -234,6 +177,13 @@ foreach ($htmlPages as $url => $category) {
 
 $collectedEntries = array();
 $finalData = array();
+$i = 0;
+
+echo PHP_EOL;
+echo '###############' . PHP_EOL;
+echo 'Fehlerprotokoll' . PHP_EOL;
+echo '###############';
+echo PHP_EOL;
 
 foreach ($extractedData as $key => $extractedEntry) {
     foreach ($mdbDatabaseCSVExport as $key => $originalEntry) {
@@ -257,6 +207,20 @@ foreach ($extractedData as $key => $extractedEntry) {
             $extractedEntry['PLZ'] = $originalEntry[9];
             $extractedEntry['Ort'] = $originalEntry[10];
             $extractedEntry['Oeffnungszeiten'] = $originalEntry[19];
+
+            /**
+             * Enrich data with adress information
+             */
+            // ask for long and lat for a given address (cached access)
+            list($long, $lat) = getLongLatForAddress(
+                $extractedEntry['Titel'],
+                $extractedEntry['Straße'],
+                $extractedEntry['PLZ'],
+                $extractedEntry['Ort']
+            );
+
+            $extractedEntry['Longitude'] = $long;
+            $extractedEntry['Latitude'] = $lat;
 
             /*
              * Parkplatz
@@ -355,6 +319,8 @@ foreach ($extractedData as $key => $extractedEntry) {
         }
     }
 }
+
+echo PHP_EOL . PHP_EOL . '----------';
 
 // Generate CSV file
 createCSVFile('le-online-extracted-places.csv', $finalData);
