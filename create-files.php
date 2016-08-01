@@ -203,7 +203,6 @@ foreach ($extractedData as $key => $extractedEntry) {
             /**
              * Allgemeine Informationen
              */
-            $extractedEntry['Titel'] = str_replace("'", "\'", $extractedEntry['Titel']);
             $extractedEntry['Strasse'] = $street;
             $extractedEntry['PLZ'] = $originalEntry[9];
             $extractedEntry['Ort'] = $originalEntry[10];
@@ -327,7 +326,7 @@ echo PHP_EOL . PHP_EOL . '----------';
 createCSVFile('le-online-extracted-places.csv', $finalData);
 
 // Generate TTL file
-createRDFTurtleFile('le-online-extracted-places.ttl', $finalData);
+createRDFTurtleFile('raw-places.ttl', $finalData);
 
 // Generate TTL file which contains
 createEnrichedRDFFile('enriched-places-rdf.ttl', $finalData);

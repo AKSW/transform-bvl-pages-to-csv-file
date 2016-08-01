@@ -48,10 +48,16 @@ function createRDFTurtleFile($filename, array $infoArray)
     $geoNs = 'http://www.w3.org/2003/01/geo/wgs84_pos#';
 
     foreach ($infoArray as $placeEntry) {
-        $placeUri = generateBuildingUri($placeEntry['Titel'], $bvlRootUrl);
+        $placeUri = generateBuildingUri(
+            $placeEntry['Titel'],
+            $placeEntry['Strasse'],
+            $placeEntry['PLZ'],
+            $placeEntry['Ort'],
+            $bvlRootUrl
+        );
 
         // title
-        $placeEntry['Titel'] = addslashes($placeEntry['Titel']);
+        $placeEntry['Titel'] = str_replace('"', '', $placeEntry['Titel']);
         $stmtArray[] = new StatementImpl(
             new NamedNodeImpl($placeUri),
             new NamedNodeImpl($bvlNamespaceUrl . 'titel'),
@@ -61,7 +67,7 @@ function createRDFTurtleFile($filename, array $infoArray)
         /*
          * address information
          */
-        $placeEntry['Straße'] = addslashes($placeEntry['Strasse']);
+        $placeEntry['Strasse'] = str_replace('"', '', $placeEntry['Strasse']);
         $stmtArray[] = new StatementImpl(
             new NamedNodeImpl($placeUri),
             new NamedNodeImpl($bvlNamespaceUrl . 'strasse'),
@@ -80,12 +86,18 @@ function createRDFTurtleFile($filename, array $infoArray)
         $stmtArray[] = new StatementImpl(
             new NamedNodeImpl($placeUri),
             new NamedNodeImpl($geoNs . 'long'),
-            new LiteralImpl((string)$placeEntry['Longitude'])
+            new LiteralImpl(
+                (string)$placeEntry['Longitude'],
+                new NamedNodeImpl('http://www.w3.org/2001/XMLSchema#float')
+            )
         );
         $stmtArray[] = new StatementImpl(
             new NamedNodeImpl($placeUri),
             new NamedNodeImpl($geoNs . 'latitude'),
-            new LiteralImpl((string)$placeEntry['Latitude'])
+            new LiteralImpl(
+                (string)$placeEntry['Latitude'],
+                new NamedNodeImpl('http://www.w3.org/2001/XMLSchema#float')
+            )
         );
 
         /*
@@ -165,7 +177,13 @@ function createEnrichedRDFFile($filename, array $infoArray)
          *                      => ElevatorWall
          *                      => ElevatorCabine
          */
-        $buildingUri = generateBuildingUri($placeEntry['Titel'], $rootUri);
+        $buildingUri = generateBuildingUri(
+            $placeEntry['Titel'],
+            $placeEntry['Strasse'],
+            $placeEntry['PLZ'],
+            $placeEntry['Ort'],
+            $rootUri
+        );
         $elevatorUri = $buildingUri . '/elevator';
         $elevatorShaftUri = $buildingUri . '/elevator/shaft';
         $elevatorCabineUri = $buildingUri . '/elevator/cabine';
@@ -319,26 +337,40 @@ function createEnrichedRDFFile($filename, array $infoArray)
  * @param string $rootUri
  * @return string Building URI
  */
-function generateBuildingUri($rawTitle, $rootUri)
+function generateBuildingUri($title, $street, $zip, $city, $rootUri)
 {
     /*
      * generate good title for the URL later on (URL encoded, but still human readable)
      */
-    $buildingUri = str_replace(
+    $buildingUri = simplifyUriPart($title)
+        . '-' . simplifyUriPart($street)
+        . '-' . simplifyUriPart($zip)
+        . '-' . simplifyUriPart($city);
+
+    return $rootUri . str_replace(array('&'), array('-and-'), simplifyUriPart($buildingUri));
+}
+
+function simplifyUriPart($string)
+{
+    /*
+    return urlencode(trim(
+        preg_replace('/\s\s+/', ' ', strtolower($string))
+    ));*/
+
+    return str_replace(
         array(
             ' ',     'ß',  'ä',  'Ä',  'ü',  'Ü',  'ö',  'Ö',  '<br-/>', '&uuml;', '&auml;', '&ouml;', '"', 'eacute;', '/',     '\\',
             'ouml;', 'auml;', 'uuml;', ',', "'", '>', '<', '`', '´', '(', ')'
         ),
         array(
-            '-',     'ss', 'ae', 'ae', 'ue', 'ue', 'oe', 'oe', '',       'ue',     'ae',     'oe',     '',  'e',       '_',     '_',
-            'oe',    'ae',    'ue',    '-', '_', '', '', '', '', '', ''
+            '-',     'ss', 'ae', 'ae', 'ue', 'ue', 'oe', 'oe', '',       'ue',     'ae',     'oe',     '',
+            'é',       '_',     '_',
+            'oe',    'ae',    'ue',    '-', '_', '',  '',  '',  '',  '',  ''
         ),
         trim(
-            preg_replace('/\s\s+/', ' ', strtolower($rawTitle))
+            preg_replace('/\s\s+/', ' ', strtolower($string))
         )
     );
-
-    return $rootUri . str_replace(array('&'), array('-and-'), $buildingUri);
 }
 
 /**
