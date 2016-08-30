@@ -37,16 +37,18 @@ function createCSVFile($filename, array $infoArray)
 /**
  * By given root URI and raw building title, an URI will be generated.
  *
- * @param string $rawTitle
- * @param string $rootUri
- * @return string Building URI
+ * @param string $title
+ * @param string $street
+ * @param string $zip
+ * @param string $city
+ * @param string $position
  */
-function generateBuildingUniqueIdentifier($title, $street, $zip, $city)
+function generateBuildingUniqueIdentifier($title, $street, $zip, $city, $position)
 {
     /*
      * generate good title for the URL later on (URL encoded, but still human readable)
      */
-    $buildingUri = simplifyUriPart($title)
+    $buildingUri = $position . '-' . simplifyUriPart($title)
         . '-' . simplifyUriPart($street)
         . '-' . simplifyUriPart($zip)
         . '-' . simplifyUriPart($city);
@@ -56,7 +58,11 @@ function generateBuildingUniqueIdentifier($title, $street, $zip, $city)
 
 function simplifyUriPart($string)
 {
-    return str_replace(
+    $string = trim(
+        preg_replace('/\s\s+/', '-', strtolower($string))
+    );
+
+    $string = str_replace(
         array(
             ' ',     'ß',  'ä',  'Ä',  'ü',  'Ü',  'ö',  'Ö',  '<br-/>', '&uuml;', '&auml;', '&ouml;', '"', 'eacute;', '/',     '\\',
             'ouml;', 'auml;', 'uuml;', ',', "'", '>', '<', '`', '´', '(', ')'
@@ -66,10 +72,11 @@ function simplifyUriPart($string)
             'é',       '_',     '_',
             'oe',    'ae',    'ue',    '-', '_', '',  '',  '',  '',  '',  ''
         ),
-        trim(
-            preg_replace('/\s\s+/', '-', strtolower($string))
-        )
+        $string
     );
+
+    // transform multiple dashes to one
+    return preg_replace('/--+/', '-', $string);
 }
 
 /**

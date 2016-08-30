@@ -226,7 +226,8 @@ foreach ($extractedData as $key => $extractedEntry) {
                 $extractedEntry['Titel'],
                 $extractedEntry['Strasse'],
                 $extractedEntry['PLZ'],
-                $extractedEntry['Ort']
+                $extractedEntry['Ort'],
+                $i++
             );
 
             /*
