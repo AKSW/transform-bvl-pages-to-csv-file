@@ -244,7 +244,7 @@ foreach ($extractedData as $key => $extractedEntry) {
              */
             $extractedEntry['Stufen-bis-Eingang-vorhanden'] = getBinaryAnswer($originalEntry[26]);
             $extractedEntry['Anzahl-der-Stufen-bis-Eingang'] = $originalEntry[27];
-            $extractedEntry['Hoehe-einer-Stufe-bis-Eingang-cm'] = $originalEntry[28];
+            $extractedEntry['Hoehe-einer-Stufe-bis-Eingang-cm'] = transformStringToFloat($originalEntry[28]);
             $extractedEntry['Eingang-Handlauf-durchgehend-links-vorhanden'] = getBinaryAnswer($originalEntry[29]);
             $extractedEntry['Eingang-Handlauf-durchgehend-rechts-vorhanden'] = getBinaryAnswer($originalEntry[30]);
             $extractedEntry['Eingang-Farbliche-Markierung-erste-u-letzte-Stufe-vorhanden'] = getBinaryAnswer($originalEntry[31]);
@@ -254,9 +254,9 @@ foreach ($extractedData as $key => $extractedEntry) {
              * Rampe im Eingangsbereich
              */
             $extractedEntry['Rampe-vor-Eingang-vorhanden'] = getBinaryAnswer($originalEntry[34]);
-            $extractedEntry['Laenge-der-Rampe-cm'] = $originalEntry[35];
-            $extractedEntry['Hoehe-der-Rampe-cm'] = $originalEntry[36];
-            $extractedEntry['Breite-der-Rampe-cm'] = $originalEntry[37];
+            $extractedEntry['Laenge-der-Rampe-cm'] = transformStringToFloat($originalEntry[35]);
+            $extractedEntry['Hoehe-der-Rampe-cm'] = transformStringToFloat($originalEntry[36]);
+            $extractedEntry['Breite-der-Rampe-cm'] = transformStringToFloat($originalEntry[37]);
             $extractedEntry['Rampe-Handlauf-durchgehend-links-vorhanden'] = getBinaryAnswer($originalEntry[38]);
             $extractedEntry['Rampe-Handlauf-durchgehend-rechts-vorhanden'] = getBinaryAnswer($originalEntry[39]);
             $extractedEntry['Rampe-Farbliche-Markierung-an-Beginn-u-Ende-der-Rampe-vorhanden'] = getBinaryAnswer($originalEntry[40]);
@@ -266,11 +266,11 @@ foreach ($extractedData as $key => $extractedEntry) {
             $extractedEntry['Eingang-Klingel-vorhanden'] = getBinaryAnswer($originalEntry[41]);
             $extractedEntry['Eingang-Ort-der-Klingel'] = $originalEntry[42];
             $extractedEntry['Eingang-Klingel-mit-Wechselsprechanlage-vorhanden'] = getBinaryAnswer($originalEntry[43]);
-            $extractedEntry['Eingang-Hoehe-oberster-Bedienknopf-von-Klingel-cm'] = $originalEntry[44];
+            $extractedEntry['Eingang-Hoehe-oberster-Bedienknopf-von-Klingel-cm'] = transformStringToFloat($originalEntry[44]);
             /*
              * Tuer im Eingangsbereich
              */
-            $extractedEntry['Kleinste-Tuerbreite-bis-Erreichen-der-Einrichtung-cm'] = $originalEntry[45];
+            $extractedEntry['Kleinste-Tuerbreite-bis-Erreichen-der-Einrichtung-cm'] = transformStringToFloat($originalEntry[45]);
             $extractedEntry['Tuerart-am-Eingang-Automatische-Tuer'] = getBinaryAnswer($originalEntry[46]);
             $extractedEntry['Tuerart-am-Eingang-Halbautomatische-Tuer'] = getBinaryAnswer($originalEntry[47]);
             $extractedEntry['Tuerart-am-Eingang-Drehtuer'] = getBinaryAnswer($originalEntry[48]);
@@ -283,12 +283,12 @@ foreach ($extractedData as $key => $extractedEntry) {
              */
             $extractedEntry['Aufzug-in-der-Einrichtung-vorhanden'] = getBinaryAnswer($originalEntry[53]);
             $extractedEntry['Anzahl-der-Stufen-bis-Aufzug-in-der-Einrichtung'] = $originalEntry[54];
-            $extractedEntry['Aufzug-Tuerbreite-cm'] = $originalEntry[56];
+            $extractedEntry['Aufzug-Tuerbreite-cm'] = transformStringToFloat($originalEntry[56]);
             $extractedEntry['Stufen-bis-Aufzug-in-der-Einrichtung-vorhanden'] = getBinaryAnswer($originalEntry[55]);
-            $extractedEntry['Aufzug-Breite-Innenkabine-cm'] = $originalEntry[57];
-            $extractedEntry['Aufzug-Tiefe-Innenkabine-cm'] = $originalEntry[58];
-            $extractedEntry['Aufzug-Hoehe-oberster-Bedienknopf-in-Innenkabine-cm'] = $originalEntry[59];
-            $extractedEntry['Aufzug-Hoehe-oberster-Bedienknopf-außerhalb-cm'] = $originalEntry[60];
+            $extractedEntry['Aufzug-Breite-Innenkabine-cm'] = transformStringToFloat($originalEntry[57]);
+            $extractedEntry['Aufzug-Tiefe-Innenkabine-cm'] = transformStringToFloat($originalEntry[58]);
+            $extractedEntry['Aufzug-Hoehe-oberster-Bedienknopf-in-Innenkabine-cm'] = transformStringToFloat($originalEntry[59]);
+            $extractedEntry['Aufzug-Hoehe-oberster-Bedienknopf-außerhalb-cm'] = transformStringToFloat($originalEntry[60]);
             $extractedEntry['Aufzug-Ort-Aufenthaltsort-Aufzugsberechtigter'] = $originalEntry[61];
             /*
              * Toilette in der Einrichtung
@@ -297,20 +297,20 @@ foreach ($extractedData as $key => $extractedEntry) {
             $extractedEntry['Toilette-mit-Piktogramm-als-Behindertentoilette-gekennzeichnet'] = getBinaryAnswer($originalEntry[64]);
             $extractedEntry['Stufen-bis-Toilette-in-Einrichtung-vorhanden'] = getBinaryAnswer($originalEntry[65]);
             $extractedEntry['Anzahl-Stufen-bis-Toilette-in-Einrichtung'] = $originalEntry[66];
-            $extractedEntry['Hoehe-der-Stufen-bis-Toilette-in-Einrichtung-cm'] = $originalEntry[67];
+            $extractedEntry['Hoehe-der-Stufen-bis-Toilette-in-Einrichtung-cm'] = transformStringToFloat($originalEntry[67]);
             $extractedEntry['Stufen-bis-Toilette:-Handlauf-durchgehend-links-vorhanden'] = getBinaryAnswer($originalEntry[68]);
             $extractedEntry['Stufen-bis-Toilette:-Handlauf-durchgehend-rechts-vorhanden'] = getBinaryAnswer($originalEntry[69]);
             $extractedEntry['Stufen-bis-Toilette-Farbliche-Markierung-erste-u-letzte-Stufe'] = getBinaryAnswer($originalEntry[70]);
-            $extractedEntry['Tuerbreite-der-Toilettenkabine-cm'] = $originalEntry[71];
+            $extractedEntry['Tuerbreite-der-Toilettenkabine-cm'] = transformStringToFloat($originalEntry[71]);
             $extractedEntry['ToilettenTuer-von-außen-entriegelbar'] = getBinaryAnswer($originalEntry[72]);
             $extractedEntry['Notklingel-in-Toilettenkabine-vorhanden'] = getBinaryAnswer($originalEntry[73]);
             $extractedEntry['Hoehe-Notklingel-in-Toilettenkabine'] = $originalEntry[74];
-            $extractedEntry['Bewegungsflaeche-vor-WC-Tiefe-cm'] = $originalEntry[75];
-            $extractedEntry['Bewegungsflaeche-vor-WC-Breite-cm'] = $originalEntry[76];
-            $extractedEntry['Bewegungsflaeche-links-vom-WC:-Tiefe-cm'] = $originalEntry[77];
-            $extractedEntry['Bewegungsflaeche-links-vom-WC:-Breite-cm'] = $originalEntry[78];
-            $extractedEntry['Bewegungsflaeche-rechts-vom-WC:-Tiefe-cm'] = $originalEntry[79];
-            $extractedEntry['Bewegungsflaeche-rechts-vom-WC:-Breite-cm'] = $originalEntry[80];
+            $extractedEntry['Bewegungsflaeche-vor-WC-Tiefe-cm'] = transformStringToFloat($originalEntry[75]);
+            $extractedEntry['Bewegungsflaeche-vor-WC-Breite-cm'] = transformStringToFloat($originalEntry[76]);
+            $extractedEntry['Bewegungsflaeche-links-vom-WC:-Tiefe-cm'] = transformStringToFloat($originalEntry[77]);
+            $extractedEntry['Bewegungsflaeche-links-vom-WC:-Breite-cm'] = transformStringToFloat($originalEntry[78]);
+            $extractedEntry['Bewegungsflaeche-rechts-vom-WC:-Tiefe-cm'] = transformStringToFloat($originalEntry[79]);
+            $extractedEntry['Bewegungsflaeche-rechts-vom-WC:-Breite-cm'] = transformStringToFloat($originalEntry[80]);
             $extractedEntry['Aktivierung-Amatur-Waschbecken-Toilettenkabine-mit-Fotozelle'] = getBinaryAnswer($originalEntry[84]);
             $extractedEntry['Aktivierung-Amatur-Waschbecken-Toilettenkabine-mit-Hebelarm'] = getBinaryAnswer($originalEntry[85]);
             /*

@@ -192,3 +192,18 @@ function getBinaryAnswer($value)
     $value = (int)$value;
     return 1 == $value ? 'ja' : 'nein';
 }
+
+/**
+ * Transforms strings like 7.2769482308e+01 to a real float.
+ *
+ * @param string $value
+ * @return null|float
+ */
+function transformStringToFloat($value)
+{
+    if (is_string($value) && false !== strpos($value, 'e')) {
+        return (0 + str_replace(',', '.', $value));
+    }
+
+    return $value;
+}
