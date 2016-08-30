@@ -1,8 +1,8 @@
-# Transformator to create CSV file out of pages from Behindertenverband Leipzig e.V.
+# Enriched CSV version of the building database from Behindertenverband Leipzig e.V.
 
-This repository contains a simple PHP script, which transforms pages about places in Leipzig and their degree of accessibility into a single CSV file (in German). These pages are being provided by the [Behindertenverband Leipzig e.V](http://www.le-online.de/).
+This repository contains a simple PHP script, which transforms an exported CSV file with building information to an enriched version. It contains further information and normalized strings. Information are about buildings located in Leipzig and their degree of accessibility. The source data is being provided by the [Behindertenverband Leipzig e.V](http://www.le-online.de/).
 
-The following pages are covered currently:
+The following areas are covered currently:
 * Education: http://www.le-online.de/bildung.htm
 * Services: http://www.le-online.de/dienst.htm
 * Restaurants: http://www.le-online.de/gast.htm
