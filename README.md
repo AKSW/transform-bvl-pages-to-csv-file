@@ -13,7 +13,7 @@ The following areas are covered currently:
 
 ## License
 
-Published CSV- and TTL files are licensed under the terms of [*Data licence Germany – attribution – version 2.0*](https://www.govdata.de/dl-de/by-2-0).
+Published CSV file is licensed under the terms of [*Data licence Germany – attribution – version 2.0*](https://www.govdata.de/dl-de/by-2-0).
 
 Software source code is licensed under the terms of [*GPL 3.0*](http://www.gnu.org/licenses/gpl-3.0.en.html).
 
