@@ -222,6 +222,13 @@ foreach ($extractedData as $key => $extractedEntry) {
             $extractedEntry['Longitude'] = $long;
             $extractedEntry['Latitude'] = $lat;
 
+            $extractedEntry['ID'] = generateBuildingUniqueIdentifier(
+                $extractedEntry['Titel'],
+                $extractedEntry['Strasse'],
+                $extractedEntry['PLZ'],
+                $extractedEntry['Ort']
+            );
+
             /*
              * Parkplatz
              */
@@ -324,9 +331,3 @@ echo PHP_EOL . PHP_EOL . '----------';
 
 // Generate CSV file
 createCSVFile('le-online-extracted-places.csv', $finalData);
-
-// Generate TTL file
-createRDFTurtleFile('raw-places.ttl', $finalData);
-
-// Generate TTL file which contains
-createEnrichedRDFFile('enriched-places-rdf.ttl', $finalData);
