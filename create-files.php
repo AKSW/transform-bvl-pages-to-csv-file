@@ -33,6 +33,11 @@ $matches = null;
 $fileContentArray = array();
 $key = 0;
 $curl = new Curl\Curl();
+
+if (false === file_exists('table.csv')) {
+    throw new Exception('File table.csv not found. Aborting ...');
+}
+
 $mdbDatabaseCSVExport = loadCSVFileIntoArray('table.csv');
 
 foreach ($htmlPages as $url => $category) {
