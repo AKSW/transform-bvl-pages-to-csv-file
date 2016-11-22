@@ -9,7 +9,7 @@ use Saft\Rdf\StatementImpl;
 
 // setup Database connection
 try {
-    R::setup('mysql:host=localhost;dbname=test', 'root', 'root');
+    R::setup('sqlite:./geo-info.sqlite3');
 } catch (RedBeanPHP\RedException $e) {}
 
 /**
@@ -23,7 +23,10 @@ function createCSVFile($filename, array $infoArray)
     $file = fopen($filename, 'w');
     $copy = $infoArray;
 
-    // set title
+    if (0 == count($infoArray)) {
+        throw new Exception('Given $infoArray parameter is empty. Aborting CSV file generation...');
+    }
+
     fputcsv($file, array_keys(array_shift($copy)));
     $i = 0;
     foreach ($infoArray as $value) {
