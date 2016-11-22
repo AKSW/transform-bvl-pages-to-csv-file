@@ -19,4 +19,4 @@ Software source code is licensed under the terms of [*GPL 3.0*](http://www.gnu.o
 
 ## Usage infos
 
-We used the closed building database maintain by the BVL to generate the CSV files. Without it, you can't use these scripts. In case you have it (`table.csv`), to run the script `create-files.php` you have to set your database connection in the `functions.php` file (look for the `R::setup` part). Furthermore, you need to run `composer update` to setup required vendors.
+We used the closed building database maintain by the BVL to generate the CSV files. Without it, you can't use these scripts. In case you have it (`table.csv`) run the script `enrich-table-csv.php`. Furthermore, you need to run `composer update` to setup required vendors.
