@@ -36,6 +36,7 @@ $curl = new Curl\Curl();
 
 if (false === file_exists('table.csv')) {
     throw new Exception('File table.csv not found. Aborting ...');
+    return;
 }
 
 $mdbDatabaseCSVExport = loadCSVFileIntoArray('table.csv');
@@ -192,6 +193,11 @@ echo PHP_EOL;
 
 foreach ($extractedData as $key => $extractedEntry) {
     foreach ($mdbDatabaseCSVExport as $key => $originalEntry) {
+        if (!isset($originalEntry[5]) || !isset($originalEntry[7])) {
+            echo PHP_EOL . 'Data seems corrupt, essential fields are unset. Aborting ...'
+            return;
+        }
+
         $street = preg_replace('/(\(.*?\))/si', '', $originalEntry[7]);
 
         // if title of mdb-dataset matches with one of the online ones
