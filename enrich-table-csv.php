@@ -194,8 +194,8 @@ echo PHP_EOL;
 foreach ($extractedData as $key => $extractedEntry) {
     foreach ($mdbDatabaseCSVExport as $key => $originalEntry) {
         if (!isset($originalEntry[5]) || !isset($originalEntry[7])) {
-            echo PHP_EOL . 'Title information missing...';
-            var_dump($originalEntry);
+            echo PHP_EOL . 'Data seems corrupt, essential fields are unset. Aborting ...'
+            return;
         }
 
         $street = preg_replace('/(\(.*?\))/si', '', $originalEntry[7]);
