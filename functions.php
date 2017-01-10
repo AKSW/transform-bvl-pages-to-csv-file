@@ -111,7 +111,7 @@ function getLongLatForAddress($title, $street, $zip, $city)
         $entry->lat = "";
     }
     // if long and lat is not set, try to get it from google
-    if ('' == $entry->long && '' == $entry->lat) {
+    if (1 > (float)$entry->long || 1 > (float)$entry->lat) {
         $curl = new Curl\Curl();
 
         // ask google for geometry information for a given address
@@ -122,17 +122,28 @@ function getLongLatForAddress($title, $street, $zip, $city)
         // store JSON result
         $latLongInformation = json_decode(json_encode($curl->response), true);
 
-        if (isset($latLongInformation['results'][0]['geometry']['location']['lat'])
-            && isset($latLongInformation['results'][0]['geometry']['location']['lng'])) {
-            $entry->lng = $latLongInformation['results'][0]['geometry']['location']['lng'];
-            $entry->lat = $latLongInformation['results'][0]['geometry']['location']['lat'];
+        if (isset($latLongInformation['results'][0]['geometry']['location']['lat'])) {
+            $lat = $latLongInformation['results'][0]['geometry']['location']['lat'];
+        } else {
+            $lat = 0;
+        }
+
+        if (isset($latLongInformation['results'][0]['geometry']['location']['lng'])) {
+            $long = $latLongInformation['results'][0]['geometry']['location']['lng'];
+        } else {
+            $long = 0;
+        }
+
+        if (0 < (float)$lat && 0 < (float)$long) {
+            $entry->lng = $long;
+            $entry->lat = $lat;
             R::store($entry);
         } else {
             echo PHP_EOL . PHP_EOL . $title;
             echo PHP_EOL . $street .' '. $zip .' '. $city;
             echo PHP_EOL . 'no lat OR long';
-            $entry->lng = '';
-            $entry->lat = '';
+            $entry->lng = $long;
+            $entry->lat = $lat;
         }
     }
 

@@ -36,6 +36,7 @@ $curl = new Curl\Curl();
 
 if (false === file_exists('table.csv')) {
     throw new Exception('File table.csv not found. Aborting ...');
+    return;
 }
 
 $mdbDatabaseCSVExport = loadCSVFileIntoArray('table.csv');
@@ -164,6 +165,10 @@ foreach ($htmlPages as $url => $category) {
             $extractedData[$key]['Personenaufzug-vorhanden'] = 'ja';
         } else {
             $extractedData[$key]['Personenaufzug-vorhanden'] = 'nein';
+
+            if ('ja' == $extractedData[$key]['Personenaufzug-rollstuhlgerecht']) {
+                $extractedData[$key]['Personenaufzug-vorhanden'] = 'ja';
+            }
         }
 
         // WC fully accessable for wheelchair users
@@ -192,6 +197,11 @@ echo PHP_EOL;
 
 foreach ($extractedData as $key => $extractedEntry) {
     foreach ($mdbDatabaseCSVExport as $key => $originalEntry) {
+        if (!isset($originalEntry[5]) || !isset($originalEntry[7])) {
+            echo PHP_EOL . 'Title information missing...';
+            var_dump($originalEntry);
+        }
+
         $street = preg_replace('/(\(.*?\))/si', '', $originalEntry[7]);
 
         // if title of mdb-dataset matches with one of the online ones
