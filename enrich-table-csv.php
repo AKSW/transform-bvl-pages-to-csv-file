@@ -34,8 +34,8 @@ $fileContentArray = array();
 $key = 0;
 $curl = new Curl\Curl();
 
-if (false === file_exists('table.csv')) {
-    throw new Exception('File table.csv not found. Aborting ...');
+if (false === file_exists(__DIR__ . '/table.csv')) {
+    throw new Exception('File ' . __DIR__ . '/table.csv not found. Aborting ...');
     return;
 }
 
@@ -190,16 +190,17 @@ $finalData = array();
 $i = 0;
 
 echo PHP_EOL;
-echo '###############' . PHP_EOL;
-echo 'Fehlerprotokoll' . PHP_EOL;
-echo '###############';
+echo '#########' . PHP_EOL;
+echo 'Protokoll' . PHP_EOL;
+echo '#########';
 echo PHP_EOL;
 
 foreach ($extractedData as $key => $extractedEntry) {
     foreach ($mdbDatabaseCSVExport as $key => $originalEntry) {
         if (!isset($originalEntry[5]) || !isset($originalEntry[7])) {
-            echo PHP_EOL . 'Title information missing...';
             var_dump($originalEntry);
+            echo PHP_EOL . 'Data seems corrupt, essential fields are unset. Aborting ...';
+            return;
         }
 
         $street = preg_replace('/(\(.*?\))/si', '', $originalEntry[7]);
@@ -337,6 +338,8 @@ foreach ($extractedData as $key => $extractedEntry) {
             $extractedEntry['Beschreibung-Hilfestellungen-vor-Ort'] = $originalEntry[112];
 
             $finalData[] = $extractedEntry;
+
+            echo PHP_EOL . $extractedEntry['Titel'] . ' finished' . PHP_EOL;
 
             break;
         }
