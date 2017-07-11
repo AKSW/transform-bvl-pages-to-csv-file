@@ -337,6 +337,9 @@ foreach ($extractedData as $key => $extractedEntry) {
             $extractedEntry['Bewegungsflaeche-links-vom-WC:-Breite-cm'] = transformStringToFloat($originalEntry[78]);
             $extractedEntry['Bewegungsflaeche-rechts-vom-WC:-Tiefe-cm'] = transformStringToFloat($originalEntry[79]);
             $extractedEntry['Bewegungsflaeche-rechts-vom-WC:-Breite-cm'] = transformStringToFloat($originalEntry[80]);
+            $extractedEntry['Stuetzgriff-neben-WC-vorhanden'] = getBinaryAnswer($originalEntry[81]);
+            $extractedEntry['Stuetzgriff-neben-WC-links-klappbar'] = getBinaryAnswer($originalEntry[82]);
+            $extractedEntry['Stuetzgriff-neben-WC-rechts-klappbar'] = getBinaryAnswer($originalEntry[83]);
             $extractedEntry['Aktivierung-Amatur-Waschbecken-Toilettenkabine-mit-Fotozelle'] = getBinaryAnswer($originalEntry[84]);
             $extractedEntry['Aktivierung-Amatur-Waschbecken-Toilettenkabine-mit-Hebelarm'] = getBinaryAnswer($originalEntry[85]);
             /*
