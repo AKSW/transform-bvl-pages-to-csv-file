@@ -275,7 +275,8 @@ foreach ($extractedData as $key => $extractedEntry) {
             $extractedEntry['Breite-der-Rampe-cm'] = transformStringToFloat($originalEntry[37]);
             $extractedEntry['Rampe-Handlauf-durchgehend-links-vorhanden'] = getBinaryAnswer($originalEntry[38]);
             $extractedEntry['Rampe-Handlauf-durchgehend-rechts-vorhanden'] = getBinaryAnswer($originalEntry[39]);
-            $extractedEntry['Rampe-Farbliche-Markierung-an-Beginn-u-Ende-der-Rampe-vorhanden'] = getBinaryAnswer($originalEntry[40]);
+            $extractedEntry['Rampe-Farbliche-Markierung-an-Beginn-u-Ende-der-Rampe-vorhanden']
+                = getBinaryAnswer($originalEntry[40]);
             /*
              * Klingel im Eingangsbereich
              */
@@ -306,6 +307,15 @@ foreach ($extractedData as $key => $extractedEntry) {
             $extractedEntry['Aufzug-Hoehe-oberster-Bedienknopf-in-Innenkabine-cm'] = transformStringToFloat($originalEntry[59]);
             $extractedEntry['Aufzug-Hoehe-oberster-Bedienknopf-außerhalb-cm'] = transformStringToFloat($originalEntry[60]);
             $extractedEntry['Aufzug-Ort-Aufenthaltsort-Aufzugsberechtigter'] = $originalEntry[61];
+            // check for "geringen Wendekreis beachten!", which means that there is not sufficient space when
+            // leaving a lift. because of this fact, lifts are not fully accessible, if value here is "gering"
+            if (false !== strpos($originalEntry[33], 'geringen Wendekreis beachten!')) {
+                $extractedEntry['Aufzug-Wendekreis-bei-Ausstieg'] = 'gering';
+                $extractedEntry['Personenaufzug-rollstuhlgerecht'] = 'teilweise';
+            } else {
+                $extractedEntry['Aufzug-Wendekreis-bei-Ausstieg'] = 'ausreichend';
+            }
+
             /*
              * Toilette in der Einrichtung
              */
@@ -350,3 +360,6 @@ echo PHP_EOL . PHP_EOL . '----------';
 
 // Generate CSV file
 createCSVFile('le-online-extracted-places.csv', $finalData);
+
+echo PHP_EOL;
+echo PHP_EOL;
