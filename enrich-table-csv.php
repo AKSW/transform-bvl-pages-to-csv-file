@@ -277,6 +277,16 @@ foreach ($extractedData as $key => $extractedEntry) {
             $extractedEntry['Rampe-Handlauf-durchgehend-rechts-vorhanden'] = getBinaryAnswer($originalEntry[39]);
             $extractedEntry['Rampe-Farbliche-Markierung-an-Beginn-u-Ende-der-Rampe-vorhanden']
                 = getBinaryAnswer($originalEntry[40]);
+
+            // compute degree of the ramp
+            $rampHeight = transformStringToFloat($originalEntry[36]);
+            $rampLength = transformStringToFloat($originalEntry[35]);
+            if (0 < $rampHeight && 0 < $rampLength) {
+                $extractedEntry['Rampe-Steigung'] = round(asin($rampHeight / $rampLength)*100, 2);
+            } else {
+                $extractedEntry['Rampe-Steigung'] = '-';
+            }
+
             /*
              * Klingel im Eingangsbereich
              */
