@@ -298,6 +298,23 @@ foreach ($extractedData as $key => $extractedEntry) {
              * Tuer im Eingangsbereich
              */
             $extractedEntry['Kleinste-Tuerbreite-bis-Erreichen-der-Einrichtung-cm'] = transformStringToFloat($originalEntry[45]);
+
+            if ('ja' == getBinaryAnswer($originalEntry[46])) {
+                $doorUri = 'https://github.com/AKSW/leds-asp-f-ontologies/raw/master/ontologies/building/ontology.ttl#AutomaticDoor';
+            } elseif ('ja' == getBinaryAnswer($originalEntry[47])) {
+                $doorUri = 'https://github.com/AKSW/leds-asp-f-ontologies/raw/master/ontologies/building/ontology.ttl#SemiautomaticDoor';
+            } elseif ('ja' == getBinaryAnswer($originalEntry[48])) {
+                $doorUri = 'https://github.com/AKSW/leds-asp-f-ontologies/raw/master/ontologies/building/ontology.ttl#CirclingLeafDoor';
+            } elseif ('ja' == getBinaryAnswer($originalEntry[49])) {
+                $doorUri = 'https://github.com/AKSW/leds-asp-f-ontologies/raw/master/ontologies/building/ontology.ttl#SlideDoor';
+            } elseif ('ja' == getBinaryAnswer($originalEntry[51])) {
+                $doorUri = 'https://github.com/AKSW/leds-asp-f-ontologies/raw/master/ontologies/building/ontology.ttl#SwingDoor';
+            } elseif ('ja' == getBinaryAnswer($originalEntry[50])
+                || 'ja' == getBinaryAnswer($originalEntry[52])) {
+                $doorUri = 'https://github.com/AKSW/leds-asp-f-ontologies/raw/master/ontologies/building/ontology.ttl#SomeDoor';
+            }
+            $extractedEntry['Tuerart-am-Eingang'] = $doorUri;
+
             $extractedEntry['Tuerart-am-Eingang-Automatische-Tuer'] = getBinaryAnswer($originalEntry[46]);
             $extractedEntry['Tuerart-am-Eingang-Halbautomatische-Tuer'] = getBinaryAnswer($originalEntry[47]);
             $extractedEntry['Tuerart-am-Eingang-Drehtuer'] = getBinaryAnswer($originalEntry[48]);
@@ -350,6 +367,16 @@ foreach ($extractedData as $key => $extractedEntry) {
             $extractedEntry['Stuetzgriff-neben-WC-vorhanden'] = getBinaryAnswer($originalEntry[81]);
             $extractedEntry['Stuetzgriff-neben-WC-links-klappbar'] = getBinaryAnswer($originalEntry[82]);
             $extractedEntry['Stuetzgriff-neben-WC-rechts-klappbar'] = getBinaryAnswer($originalEntry[83]);
+
+            if ('ja' == getBinaryAnswer($originalEntry[84])) {
+                $type = 'https://github.com/AKSW/leds-asp-f-ontologies/raw/master/ontologies/building/ontology.ttl#Phototube';
+            } elseif ('ja' == getBinaryAnswer($originalEntry[85])) {
+                $type = 'https://github.com/AKSW/leds-asp-f-ontologies/raw/master/ontologies/building/ontology.ttl#LeverArm';
+            } else {
+                $type = '';
+            }
+            $extractedEntry['Aktivierung-Amatur-Waschbecken-Toilettenkabine'] = $type;
+
             $extractedEntry['Aktivierung-Amatur-Waschbecken-Toilettenkabine-mit-Fotozelle'] = getBinaryAnswer($originalEntry[84]);
             $extractedEntry['Aktivierung-Amatur-Waschbecken-Toilettenkabine-mit-Hebelarm'] = getBinaryAnswer($originalEntry[85]);
             /*
