@@ -17,6 +17,8 @@ Published CSV file is licensed under the terms of [*Data licence Germany – att
 
 Software source code is licensed under the terms of [*GPL 3.0*](http://www.gnu.org/licenses/gpl-3.0.en.html).
 
+The rest of the repository is licensed under the terms of the [CC-BY 4.0](https://creativecommons.org/licenses/by/4.0/).
+
 ## Usage infos
 
 We used the closed building database maintained by the BVL to generate the CSV files. Without it, you can't use these scripts. In case you have it (`table.csv`) run the script `enrich-table-csv.php`. Furthermore, you need to run `composer update` to setup required vendors.
