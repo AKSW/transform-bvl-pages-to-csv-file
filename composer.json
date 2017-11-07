@@ -1,10 +1,15 @@
 {
     "name": "aksw/transform-bvl-pages-to-csv-file",
+    "authors": [
+        {
+            "name": "Konrad Abicht",
+            "email": "abicht@informatik.uni-leipzig.de",
+            "role": "Maintainer, Developer"
+        }
+    ],
     "require": {
         "gabordemooij/redbean": "4.*",
-        "php-curl-class/php-curl-class": "4.*",
-        "saft/saft-data": "0.2.*",
-        "saft/saft-rdf": "0.2.*"
+        "php-curl-class/php-curl-class": "4.*"
     },
     "prefer-stable": true,
     "license": "GPL-3.0",
