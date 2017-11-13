@@ -11,6 +11,14 @@ The following areas are covered currently:
 * Organizations: http://www.le-online.de/verband.htm
 * Traffic: http://www.le-online.de/verkehr.htm
 
+## R2RML-Mapping
+
+The [R2RML](https://www.w3.org/TR/r2rml/)-mapping ([file](https://github.com/AKSW/transform-bvl-pages-to-csv-file/blob/master/r2rml-mapping.ttl)) allows the transformation of the CSV file to RDF using R2RML tools like [sparqlmap](https://github.com/tomatophantastico/sparqlmap). Its purpose is to lower the barrier to convert original data, modeled as a table, in further formats.
+
+## Usage infos
+
+We used the closed building database maintained by the BVL to generate the CSV files. Without it, you can't use these scripts. In case you have it (`table.csv`) run the script `enrich-table-csv.php`. Furthermore, you need to run `composer update` to setup required vendors.
+
 ## License
 
 Published CSV file is licensed under the terms of [*Data licence Germany – attribution – version 2.0*](https://www.govdata.de/dl-de/by-2-0).
@@ -18,7 +26,3 @@ Published CSV file is licensed under the terms of [*Data licence Germany – att
 Software source code is licensed under the terms of [*GPL 3.0*](http://www.gnu.org/licenses/gpl-3.0.en.html).
 
 The rest of the repository is licensed under the terms of the [CC-BY 4.0](https://creativecommons.org/licenses/by/4.0/).
-
-## Usage infos
-
-We used the closed building database maintained by the BVL to generate the CSV files. Without it, you can't use these scripts. In case you have it (`table.csv`) run the script `enrich-table-csv.php`. Furthermore, you need to run `composer update` to setup required vendors.
