@@ -20,7 +20,7 @@ R2RML mapping is based on a couple of controlled vocabularies, such as [Dublin C
 * The [building ontology](https://github.com/AKSW/leds-asp-f-ontologies/tree/master/ontologies/building) contains properties and classes about buildings in general.
 * The [building accessibility ontology](https://github.com/AKSW/leds-asp-f-ontologies/tree/master/ontologies/building-accessibility) contains properties to model accessibility information of a building.
 
-The file [places.ttl] was generated using sparqlmap with our R2RML-mapping.
+The file [places.ttl](places.ttl) was generated using sparqlmap with our R2RML-mapping.
 
 ## SHACL rules
 
