@@ -11,7 +11,7 @@ The following areas are covered currently:
 * Organizations: http://www.le-online.de/verband.htm
 * Traffic: http://www.le-online.de/verkehr.htm
 
-## R2RML-Mapping
+## R2RML-Mapping (CSV => RDF)
 
 The [R2RML](https://www.w3.org/TR/r2rml/)-mapping ([file](https://github.com/AKSW/transform-bvl-pages-to-csv-file/blob/master/r2rml-mapping.ttl)) allows the transformation of the CSV file to RDF using R2RML tools like [sparqlmap](https://github.com/tomatophantastico/sparqlmap). Its purpose is to lower the barrier to convert original data, modeled as a table, in further formats.
 
@@ -19,6 +19,14 @@ R2RML mapping is based on a couple of controlled vocabularies, such as [Dublin C
 
 * The [building ontology](https://github.com/AKSW/leds-asp-f-ontologies/tree/master/ontologies/building) contains properties and classes about buildings in general.
 * The [building accessibility ontology](https://github.com/AKSW/leds-asp-f-ontologies/tree/master/ontologies/building-accessibility) contains properties to model accessibility information of a building.
+
+The file [places.ttl] was generated using sparqlmap with our R2RML-mapping.
+
+## SHACL rules
+
+We also developed, based on the building accessibility ontology, an extended set of SHACL rules. [SHACL](https://en.wikipedia.org/wiki/SHACL) can be used to formulate rules about RDF graphs. Using a SHACL processor helps evaluating, if a given dataset is valid or not.
+
+You can found the SHACL rules here: https://github.com/AKSW/shacl-shapes/tree/master/shape-infos/accessible-building
 
 ## Usage infos
 
