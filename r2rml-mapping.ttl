@@ -88,7 +88,7 @@
     # Reference to Entrance entity
     rr:predicateObjectMap [
         rr:objectMap [ rr:template "https://behindertenverband-leipzig.de/ns/gebaeude/{ID}/Entrance" ] ;
-        rr:predicate b:entrace
+        rr:predicate b:entrance
     ] ;
 
     # Reference to Location entity
