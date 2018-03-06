@@ -7,7 +7,6 @@
 @prefix geo:    <http://www.w3.org/2003/01/geo/> .
 @prefix rr:     <http://www.w3.org/ns/r2rml#> .
 @prefix schema: <http://schema.org/> .
-@prefix skos:   <http://www.w3.org/2004/02/skos/core#> .
 @prefix wa:     <http://semweb.mmlab.be/ns/wa#> .
 
 #
@@ -39,11 +38,6 @@
     rr:predicateObjectMap [
         rr:objectMap [ rr:column "\"Oeffnungszeiten\"" ] ;
         rr:predicate b:openingHours
-    ] ;
-
-    rr:predicateObjectMap [
-        rr:objectMap [ rr:column "\"Hinweis\"" ] ;
-        rr:predicate skos:note
     ] ;
 
     rr:predicateObjectMap [
@@ -165,10 +159,6 @@
 
     rr:predicateObjectMap [
         rr:objectMap [ rr:column "\"Latitude\"" ] ; rr:predicate geo:lat
-    ] ;
-
-    rr:predicateObjectMap [
-        rr:objectMap [ rr:column "\"Lagebeschreibung-in-Einrichtung\"" ] ; rr:predicate b:notesAboutLocation
     ]
 
     .
@@ -191,7 +181,7 @@
     ] ;
 
     rr:predicateObjectMap [
-        rr:objectMap [ rr:column "\"rollstuhlgerecht\"" ] ; rr:predicate acc:suitableForWheelchairs
+        rr:objectMap [ rr:column "\"Eingangsbereich-rollstuhlgerecht\"" ] ; rr:predicate acc:suitableForWheelchairs
     ] ;
 
     rr:predicateObjectMap [
@@ -211,35 +201,31 @@
     ] ;
 
     rr:predicateObjectMap [
-        rr:objectMap [ rr:column "\"Farbliche-Markierung-erste-letzte-Stufe-vorhanden\"" ] ; rr:predicate b:stepsTillEntranceFirstLastColorized
+        rr:objectMap [ rr:column "\"Eingang-Farbliche-Markierung-erste-u-letzte-Stufe-vorhanden\"" ] ; rr:predicate b:stepsTillEntranceFirstLastColorized
     ] ;
 
     rr:predicateObjectMap [
-        rr:objectMap [ rr:column "\"Klingel-vorhanden\"" ] ; rr:predicate b:bellAvailable
+        rr:objectMap [ rr:column "\"Eingang-Klingel-vorhanden\"" ] ; rr:predicate b:bellAvailable
     ] ;
 
     rr:predicateObjectMap [
-        rr:objectMap [ rr:column "\"Ort-der-Klingel\"" ] ; rr:predicate b:locationOfTheBell
+        rr:objectMap [ rr:column "\"Eingang-Ort-der-Klingel\"" ] ; rr:predicate b:locationOfTheBell
     ] ;
 
     rr:predicateObjectMap [
-        rr:objectMap [ rr:column "\"Klingel-mit-Wechselsprechanlage-vorhanden\"" ] ; rr:predicate b:bellWithIntercomAvailable
+        rr:objectMap [ rr:column "\"Eingang-Klingel-mit-Wechselsprechanlage-vorhanden\"" ] ; rr:predicate b:bellWithIntercomAvailable
     ] ;
 
     rr:predicateObjectMap [
-        rr:objectMap [ rr:column "\"Klingel-Hoehe-oberster-Bedienknopf-cm\"" ] ; rr:predicate b:bellHeightOfHeighestButtonCm
+        rr:objectMap [ rr:column "\"Eingang-Hoehe-oberster-Bedienknopf-von-Klingel-cm\"" ] ; rr:predicate b:bellHeightOfHeighestButtonCm
     ] ;
 
     rr:predicateObjectMap [
-        rr:objectMap [ rr:column "\"Handlauf-durchgehend-links-vorhanden\"" ] ; rr:predicate b:continuousHandrailLeftAvailable
+        rr:objectMap [ rr:column "\"Eingang-Handlauf-durchgehend-links-vorhanden\"" ] ; rr:predicate b:continuousHandrailLeftAvailable
     ] ;
 
     rr:predicateObjectMap [
-        rr:objectMap [ rr:column "\"Handlauf-durchgehend-rechts-vorhanden\"" ] ; rr:predicate b:continuousHandrailRightAvailable
-    ] ;
-
-    rr:predicateObjectMap [
-        rr:objectMap [ rr:column "\"Handlauf-durchgehend-rechts-vorhanden\"" ] ; rr:predicate b:continuousHandrailRightAvailable
+        rr:objectMap [ rr:column "\"Eingang-Handlauf-durchgehend-rechts-vorhanden\"" ] ; rr:predicate b:continuousHandrailRightAvailable
     ] ;
 
     rr:predicateObjectMap [
@@ -255,19 +241,19 @@
     ] ;
 
     rr:predicateObjectMap [
-        rr:objectMap [ rr:column "\"Rampe-vorhanden\"" ] ; rr:predicate b:rampAvailable
+        rr:objectMap [ rr:column "\"Rampe-vor-Eingang-vorhanden\"" ] ; rr:predicate b:rampAvailable
     ] ;
 
     rr:predicateObjectMap [
-        rr:objectMap [ rr:column "\"Rampe-Laenge-cm\"" ] ; rr:predicate b:rampLengthCm
+        rr:objectMap [ rr:column "\"Laenge-der-Rampe-cm\"" ] ; rr:predicate b:rampLengthCm
     ] ;
 
     rr:predicateObjectMap [
-        rr:objectMap [ rr:column "\"Rampe-Hoehe-cm\"" ] ; rr:predicate b:rampHeightCm
+        rr:objectMap [ rr:column "\"Hoehe-der-Rampe-cm\"" ] ; rr:predicate b:rampHeightCm
     ] ;
 
     rr:predicateObjectMap [
-        rr:objectMap [ rr:column "\"Rampe-Breite-cm\"" ] ; rr:predicate b:rampWidthCm
+        rr:objectMap [ rr:column "\"Breite-der-Rampe-cm\"" ] ; rr:predicate b:rampWidthCm
     ] ;
 
     rr:predicateObjectMap [
@@ -279,7 +265,7 @@
     ] ;
 
     rr:predicateObjectMap [
-        rr:objectMap [ rr:column "\"Rampe-Farbliche-Markierung-Beginn-u-Ende-der-Rampe-vorhanden\"" ] ; rr:predicate b:rampStartEndColorized
+        rr:objectMap [ rr:column "\"Rampe-Farbliche-Markierung-an-Beginn-u-Ende-der-Rampe-vorhanden\"" ] ; rr:predicate b:rampStartEndColorized
     ]
     .
 
@@ -296,13 +282,13 @@
     ] ;
 
     rr:subjectMap [
-        rr:class b:Location ;
+        rr:class b:Elevator ;
         rr:template "https://behindertenverband-leipzig.de/ns/gebaeude/{ID}/Elevator" ;
         rr:termType rr:IRI
     ] ;
 
     rr:predicateObjectMap [
-        rr:objectMap [ rr:column "\"Aufenthaltsort-Aufzugsberechtigter\"" ] ; rr:predicate b:locationOfElevatorMaintainer
+        rr:objectMap [ rr:column "\"Aufzug-Ort-Aufenthaltsort-Aufzugsberechtigter\"" ] ; rr:predicate b:locationOfElevatorMaintainer
     ] ;
 
     rr:predicateObjectMap [
@@ -310,7 +296,7 @@
     ] ;
 
     rr:predicateObjectMap [
-        rr:objectMap [ rr:column "\"Stufen-bis-Aufzug-in-Einrichtung-vorhanden\"" ] ; rr:predicate acc:stepsTillElevatorInPlaceAvailable
+        rr:objectMap [ rr:column "\"Stufen-bis-Aufzug-in-der-Einrichtung-vorhanden\"" ] ; rr:predicate acc:stepsTillElevatorInPlaceAvailable
     ] ;
 
     rr:predicateObjectMap [
@@ -335,6 +321,10 @@
 
     rr:predicateObjectMap [
         rr:objectMap [ rr:column "\"Aufzug-Hoehe-oberster-Bedienknopf-außerhalb-cm\"" ] ; rr:predicate b:elevatorOutsideDistanceFromGroundHeighestButtonCm
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:objectMap [ rr:column "\"Aufzug-Wendekreis-bei-Ausstieg\"" ] ; rr:predicate b:turningCircle
     ]
     .
 
@@ -377,15 +367,15 @@
     ] ;
 
     rr:predicateObjectMap [
-        rr:objectMap [ rr:column "\"Stufen-bis-Toilette-Handlauf-durchgehend-links-vorhanden\"" ] ; rr:predicate b:stepsTillToiletContinuousHandrailLeftAvailable
+        rr:objectMap [ rr:column "\"Stufen-bis-Toilette:-Handlauf-durchgehend-links-vorhanden\"" ] ; rr:predicate b:stepsTillToiletContinuousHandrailLeftAvailable
     ] ;
 
     rr:predicateObjectMap [
-        rr:objectMap [ rr:column "\"Stufen-bis-Toilette-Handlauf-durchgehend-rechts-vorhanden\"" ] ; rr:predicate b:stepsTillToiletContinuousHandrailRightAvailable
+        rr:objectMap [ rr:column "\"Stufen-bis-Toilette:-Handlauf-durchgehend-rechts-vorhanden\"" ] ; rr:predicate b:stepsTillToiletContinuousHandrailRightAvailable
     ] ;
 
     rr:predicateObjectMap [
-        rr:objectMap [ rr:column "\"Stufen-bis-Toilette-Farbliche-Markierung-erste-letzte-Stufe\"" ] ; rr:predicate b:stepsTillToiletFirstLastColorized
+        rr:objectMap [ rr:column "\"Stufen-bis-Toilette-Farbliche-Markierung-erste-u-letzte-Stufe\"" ] ; rr:predicate b:stepsTillToiletFirstLastColorized
     ] ;
 
     rr:predicateObjectMap [
@@ -393,7 +383,7 @@
     ] ;
 
     rr:predicateObjectMap [
-        rr:objectMap [ rr:column "\"Tuer-von-außen-entriegelbar\"" ] ; rr:predicate b:toiletDoorUnlockableFromOutside
+        rr:objectMap [ rr:column "\"ToilettenTuer-von-außen-entriegelbar\"" ] ; rr:predicate b:toiletDoorUnlockableFromOutside
     ] ;
 
     rr:predicateObjectMap [
