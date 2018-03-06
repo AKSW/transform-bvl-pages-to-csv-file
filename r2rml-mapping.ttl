@@ -85,6 +85,12 @@
         rr:predicate b:address
     ] ;
 
+    # Reference to Elevator entity
+    rr:predicateObjectMap [
+        rr:objectMap [ rr:template "https://behindertenverband-leipzig.de/ns/gebaeude/{ID}/Elevator" ] ;
+        rr:predicate b:elevator
+    ] ;
+
     # Reference to Entrance entity
     rr:predicateObjectMap [
         rr:objectMap [ rr:template "https://behindertenverband-leipzig.de/ns/gebaeude/{ID}/Entrance" ] ;
