@@ -1,9 +1,10 @@
 @prefix :       <https://behindertenverband-leipzig.de/ns/r2rml/> .
-@prefix acc:    <https://github.com/AKSW/leds-asp-f-ontologies/raw/master/ontologies/building-accessibility/ontology.ttl#> .
-@prefix b:      <https://github.com/AKSW/leds-asp-f-ontologies/raw/master/ontologies/building/ontology.ttl#> .
+@prefix acc:    <https://github.com/AKSW/leds-asp-f-ontologies/raw/master/ontologies/place-accessibility/ontology.ttl#> .
+@prefix p:      <https://github.com/AKSW/leds-asp-f-ontologies/raw/master/ontologies/place/ontology.ttl#> .
 @prefix bvl:    <https://behindertenverband-leipzig.de/ns/gebaeude/> .
 @prefix dc:     <http://purl.org/dc/elements/1.1/> .
-@prefix dct:     <http://purl.org/dc/terms/> .
+@prefix dct:    <http://purl.org/dc/terms/> .
+@prefix dbp:    <http://dbpedia.org/ontology/> .
 @prefix geo:    <http://www.w3.org/2003/01/geo/> .
 @prefix rr:     <http://www.w3.org/ns/r2rml#> .
 @prefix schema: <http://schema.org/> .
@@ -20,8 +21,8 @@
     ] ;
     # subject information
     rr:subjectMap [
-        rr:class b:Building ;
-        rr:template "https://behindertenverband-leipzig.de/ns/gebaeude/{ID}" ;
+        rr:class p:Place ;
+        rr:template "https://behindertenverband-leipzig.de/places/{ID}" ;
         rr:termType rr:IRI
     ] ;
 
@@ -31,13 +32,18 @@
     ] ;
 
     rr:predicateObjectMap [
+        rr:objectMap [ rr:column "\"Kategorie\"" ] ;
+        rr:predicate dbp:category
+    ] ;
+
+    rr:predicateObjectMap [
         rr:objectMap [ rr:column "\"Titel\"" ] ;
         rr:predicate dc:title
     ] ;
 
     rr:predicateObjectMap [
         rr:objectMap [ rr:column "\"Oeffnungszeiten\"" ] ;
-        rr:predicate b:openingHours
+        rr:predicate p:openingHours
     ] ;
 
     rr:predicateObjectMap [
@@ -67,82 +73,45 @@
 
     rr:predicateObjectMap [
         rr:objectMap [ rr:column "\"Hauseigener-Parkplatz-vorhanden\"" ] ;
-        rr:predicate b:parkingLotOnSiteAvailable
+        rr:predicate p:parkingLotOnSiteAvailable
     ] ;
 
     rr:predicateObjectMap [
         rr:objectMap [ rr:column "\"Ort-hauseigener-Parkplatz\"" ] ;
-        rr:predicate b:locationParkingLotOnSite
+        rr:predicate p:locationParkingLotOnSite
     ] ;
 
     #
     # References ------------------------------------------------------------------------------
     #
 
-    # Reference to Address entity
-    rr:predicateObjectMap [
-        rr:objectMap [ rr:template "https://behindertenverband-leipzig.de/ns/gebaeude/{ID}/Address" ] ;
-        rr:predicate b:address
-    ] ;
-
     # Reference to Elevator entity
     rr:predicateObjectMap [
-        rr:objectMap [ rr:template "https://behindertenverband-leipzig.de/ns/gebaeude/{ID}/Elevator" ] ;
-        rr:predicate b:elevator
+        rr:objectMap [ rr:template "https://behindertenverband-leipzig.de/places/{ID}-elevator" ] ;
+        rr:predicate p:elevator
     ] ;
 
     # Reference to Entrance entity
     rr:predicateObjectMap [
-        rr:objectMap [ rr:template "https://behindertenverband-leipzig.de/ns/gebaeude/{ID}/Entrance" ] ;
-        rr:predicate b:entrance
+        rr:objectMap [ rr:template "https://behindertenverband-leipzig.de/places/{ID}-entrance" ] ;
+        rr:predicate p:entrance
     ] ;
 
     # Reference to Location entity
     rr:predicateObjectMap [
-        rr:objectMap [ rr:template "https://behindertenverband-leipzig.de/ns/gebaeude/{ID}/Location" ] ;
-        rr:predicate b:location
+        rr:objectMap [ rr:template "https://behindertenverband-leipzig.de/places/{ID}-location" ] ;
+        rr:predicate p:location
     ] ;
 
     # Reference to Toilet entity
     rr:predicateObjectMap [
-        rr:objectMap [ rr:template "https://behindertenverband-leipzig.de/ns/gebaeude/{ID}/Toilet" ] ;
-        rr:predicate b:location
+        rr:objectMap [ rr:template "https://behindertenverband-leipzig.de/places/{ID}-toilet" ] ;
+        rr:predicate p:toilet
     ] .
 
 #
-#                    b:address                                schema:streetAddress
-# bvl:SomeBuilding -------------> bvl:SomeBuilding/Address -----------------------> [Straße]
-#                                                             schema:postalCode
-#                                                          -----------------------> [PLZ]
-# ...
-#
-[] a rr:TriplesMap;
-
-    rr:logicalTable [
-        rr:tableName "\"le-online-extracted-places.csv\""
-    ] ;
-
-    rr:subjectMap [
-        rr:class b:Address ;
-        rr:template "https://behindertenverband-leipzig.de/ns/gebaeude/{ID}/Address" ;
-        rr:termType rr:IRI
-    ] ;
-
-    # Address
-    rr:predicateObjectMap [
-        rr:objectMap [ rr:column "\"Strasse\"" ] ; rr:predicate schema:schemaAddress
-    ] ;
-    rr:predicateObjectMap [
-        rr:objectMap [ rr:column "\"PLZ\"" ] ; rr:predicate schema:postalCode
-    ] ;
-    rr:predicateObjectMap [
-        rr:objectMap [ rr:column "\"Ort\"" ] ; rr:predicate schema:addressLocality
-    ] .
-
-
-#
-#                   b:location                                geo:long
-# bvl:SomeBuilding -------------> bvl:SomeBuilding/Location -----------------------> ...
+#                   p:location                                geo:long
+# bvl:SomePlace -------------> bvl:SomePlace/Location -----------------------> ...
 #                                                             geo:lat
 #                                                           -----------------------> ...
 # ...
@@ -154,8 +123,8 @@
     ] ;
 
     rr:subjectMap [
-        rr:class b:Location ;
-        rr:template "https://behindertenverband-leipzig.de/ns/gebaeude/{ID}/Location" ;
+        rr:class p:Location ;
+        rr:template "https://behindertenverband-leipzig.de/places/{ID}-location" ;
         rr:termType rr:IRI
     ] ;
 
@@ -165,13 +134,22 @@
 
     rr:predicateObjectMap [
         rr:objectMap [ rr:column "\"Latitude\"" ] ; rr:predicate geo:lat
-    ]
+    ] ;
 
-    .
+    # Address
+    rr:predicateObjectMap [
+        rr:objectMap [ rr:column "\"Strasse\"" ] ; rr:predicate schema:streetAddress
+    ] ;
+    rr:predicateObjectMap [
+        rr:objectMap [ rr:column "\"PLZ\"" ] ; rr:predicate schema:postalCode
+    ] ;
+    rr:predicateObjectMap [
+        rr:objectMap [ rr:column "\"Ort\"" ] ; rr:predicate schema:addressLocality
+    ] .
 
 #
-#                   b:entrance
-# bvl:SomeBuilding -------------> bvl:SomeBuilding/Entrance -----------------------> ...
+#                   p:entrance
+# bvl:SomePlace -------------> bvl:SomePlace/Entrance -----------------------> ...
 # ...
 #
 [] a rr:TriplesMap;
@@ -181,8 +159,8 @@
     ] ;
 
     rr:subjectMap [
-        rr:class b:Entrance ;
-        rr:template "https://behindertenverband-leipzig.de/ns/gebaeude/{ID}/Entrance" ;
+        rr:class p:Entrance ;
+        rr:template "https://behindertenverband-leipzig.de/places/{ID}-entrance" ;
         rr:termType rr:IRI
     ] ;
 
@@ -195,47 +173,47 @@
     ] ;
 
     rr:predicateObjectMap [
-        rr:objectMap [ rr:column "\"Stufen-bis-Eingang-vorhanden\"" ] ; rr:predicate b:stepsTillEntranceAvailable
+        rr:objectMap [ rr:column "\"Stufen-bis-Eingang-vorhanden\"" ] ; rr:predicate p:stepsTillEntranceAvailable
     ] ;
 
     rr:predicateObjectMap [
-        rr:objectMap [ rr:column "\"Anzahl-der-Stufen-bis-Eingang\"" ] ; rr:predicate b:numberOfStepsTillEntrance
+        rr:objectMap [ rr:column "\"Anzahl-der-Stufen-bis-Eingang\"" ] ; rr:predicate p:numberOfStepsTillEntrance
     ] ;
 
     rr:predicateObjectMap [
-        rr:objectMap [ rr:column "\"Hoehe-einer-Stufe-bis-Eingang-cm\"" ] ; rr:predicate b:heightOfAStepTillEntrance
+        rr:objectMap [ rr:column "\"Hoehe-einer-Stufe-bis-Eingang-cm\"" ] ; rr:predicate p:heightOfAStepTillEntrance
     ] ;
 
     rr:predicateObjectMap [
-        rr:objectMap [ rr:column "\"Eingang-Farbliche-Markierung-erste-u-letzte-Stufe-vorhanden\"" ] ; rr:predicate b:stepsTillEntranceFirstLastColorized
+        rr:objectMap [ rr:column "\"Eingang-Farbliche-Markierung-erste-u-letzte-Stufe-vorhanden\"" ] ; rr:predicate p:stepsTillEntranceFirstLastColorized
     ] ;
 
     rr:predicateObjectMap [
-        rr:objectMap [ rr:column "\"Eingang-Klingel-vorhanden\"" ] ; rr:predicate b:bellAvailable
+        rr:objectMap [ rr:column "\"Eingang-Klingel-vorhanden\"" ] ; rr:predicate p:bellAvailable
     ] ;
 
     rr:predicateObjectMap [
-        rr:objectMap [ rr:column "\"Eingang-Ort-der-Klingel\"" ] ; rr:predicate b:locationOfTheBell
+        rr:objectMap [ rr:column "\"Eingang-Ort-der-Klingel\"" ] ; rr:predicate p:locationOfTheBell
     ] ;
 
     rr:predicateObjectMap [
-        rr:objectMap [ rr:column "\"Eingang-Klingel-mit-Wechselsprechanlage-vorhanden\"" ] ; rr:predicate b:bellWithIntercomAvailable
+        rr:objectMap [ rr:column "\"Eingang-Klingel-mit-Wechselsprechanlage-vorhanden\"" ] ; rr:predicate p:bellWithIntercomAvailable
     ] ;
 
     rr:predicateObjectMap [
-        rr:objectMap [ rr:column "\"Eingang-Hoehe-oberster-Bedienknopf-von-Klingel-cm\"" ] ; rr:predicate b:bellHeightOfHeighestButtonCm
+        rr:objectMap [ rr:column "\"Eingang-Hoehe-oberster-Bedienknopf-von-Klingel-cm\"" ] ; rr:predicate p:bellHeightOfHeighestButtonCm
     ] ;
 
     rr:predicateObjectMap [
-        rr:objectMap [ rr:column "\"Eingang-Handlauf-durchgehend-links-vorhanden\"" ] ; rr:predicate b:continuousHandrailLeftAvailable
+        rr:objectMap [ rr:column "\"Eingang-Handlauf-durchgehend-links-vorhanden\"" ] ; rr:predicate p:continuousHandrailLeftAvailable
     ] ;
 
     rr:predicateObjectMap [
-        rr:objectMap [ rr:column "\"Eingang-Handlauf-durchgehend-rechts-vorhanden\"" ] ; rr:predicate b:continuousHandrailRightAvailable
+        rr:objectMap [ rr:column "\"Eingang-Handlauf-durchgehend-rechts-vorhanden\"" ] ; rr:predicate p:continuousHandrailRightAvailable
     ] ;
 
     rr:predicateObjectMap [
-        rr:objectMap [ rr:column "\"Tuerart-am-Eingang\"" ] ; rr:predicate b:doorType
+        rr:objectMap [ rr:column "\"Tuerart-am-Eingang\"" ] ; rr:predicate p:doorType
     ] ;
 
     rr:predicateObjectMap [
@@ -247,38 +225,38 @@
     ] ;
 
     rr:predicateObjectMap [
-        rr:objectMap [ rr:column "\"Rampe-vor-Eingang-vorhanden\"" ] ; rr:predicate b:rampAvailable
+        rr:objectMap [ rr:column "\"Rampe-vor-Eingang-vorhanden\"" ] ; rr:predicate p:rampAvailable
     ] ;
 
     rr:predicateObjectMap [
-        rr:objectMap [ rr:column "\"Laenge-der-Rampe-cm\"" ] ; rr:predicate b:rampLengthCm
+        rr:objectMap [ rr:column "\"Laenge-der-Rampe-cm\"" ] ; rr:predicate p:rampLengthCm
     ] ;
 
     rr:predicateObjectMap [
-        rr:objectMap [ rr:column "\"Hoehe-der-Rampe-cm\"" ] ; rr:predicate b:rampHeightCm
+        rr:objectMap [ rr:column "\"Hoehe-der-Rampe-cm\"" ] ; rr:predicate p:rampHeightCm
     ] ;
 
     rr:predicateObjectMap [
-        rr:objectMap [ rr:column "\"Breite-der-Rampe-cm\"" ] ; rr:predicate b:rampWidthCm
+        rr:objectMap [ rr:column "\"Breite-der-Rampe-cm\"" ] ; rr:predicate p:rampWidthCm
     ] ;
 
     rr:predicateObjectMap [
-        rr:objectMap [ rr:column "\"Rampe-Handlauf-durchgehend-links-vorhanden\"" ] ; rr:predicate b:rampContinuousHandrailLeftAvailable
+        rr:objectMap [ rr:column "\"Rampe-Handlauf-durchgehend-links-vorhanden\"" ] ; rr:predicate p:rampContinuousHandrailLeftAvailable
     ] ;
 
     rr:predicateObjectMap [
-        rr:objectMap [ rr:column "\"Rampe-Handlauf-durchgehend-rechts-vorhanden\"" ] ; rr:predicate b:rampContinuousHandrailRightAvailable
+        rr:objectMap [ rr:column "\"Rampe-Handlauf-durchgehend-rechts-vorhanden\"" ] ; rr:predicate p:rampContinuousHandrailRightAvailable
     ] ;
 
     rr:predicateObjectMap [
-        rr:objectMap [ rr:column "\"Rampe-Farbliche-Markierung-an-Beginn-u-Ende-der-Rampe-vorhanden\"" ] ; rr:predicate b:rampStartEndColorized
+        rr:objectMap [ rr:column "\"Rampe-Farbliche-Markierung-an-Beginn-u-Ende-der-Rampe-vorhanden\"" ] ; rr:predicate p:rampStartEndColorized
     ]
     .
 
 
 #
-#                   b:elevator
-# bvl:SomeBuilding -------------> bvl:SomeBuilding/Elevator -----------------------> ...
+#                   p:elevator
+# bvl:SomePlace -------------> bvl:SomePlace/Elevator -----------------------> ...
 # ...
 #
 [] a rr:TriplesMap;
@@ -288,13 +266,13 @@
     ] ;
 
     rr:subjectMap [
-        rr:class b:Elevator ;
-        rr:template "https://behindertenverband-leipzig.de/ns/gebaeude/{ID}/Elevator" ;
+        rr:class p:Elevator ;
+        rr:template "https://behindertenverband-leipzig.de/places/{ID}-elevator" ;
         rr:termType rr:IRI
     ] ;
 
     rr:predicateObjectMap [
-        rr:objectMap [ rr:column "\"Aufzug-Ort-Aufenthaltsort-Aufzugsberechtigter\"" ] ; rr:predicate b:locationOfElevatorMaintainer
+        rr:objectMap [ rr:column "\"Aufzug-Ort-Aufenthaltsort-Aufzugsberechtigter\"" ] ; rr:predicate p:locationOfElevatorMaintainer
     ] ;
 
     rr:predicateObjectMap [
@@ -322,22 +300,22 @@
     ] ;
 
     rr:predicateObjectMap [
-        rr:objectMap [ rr:column "\"Aufzug-Hoehe-oberster-Bedienknopf-in-Innenkabine-cm\"" ] ; rr:predicate b:elevatorCabineDistanceFromGroundHeighestButtonCm
+        rr:objectMap [ rr:column "\"Aufzug-Hoehe-oberster-Bedienknopf-in-Innenkabine-cm\"" ] ; rr:predicate p:elevatorCabineDistanceFromGroundHeighestButtonCm
     ] ;
 
     rr:predicateObjectMap [
-        rr:objectMap [ rr:column "\"Aufzug-Hoehe-oberster-Bedienknopf-außerhalb-cm\"" ] ; rr:predicate b:elevatorOutsideDistanceFromGroundHeighestButtonCm
+        rr:objectMap [ rr:column "\"Aufzug-Hoehe-oberster-Bedienknopf-außerhalb-cm\"" ] ; rr:predicate p:elevatorOutsideDistanceFromGroundHeighestButtonCm
     ] ;
 
     rr:predicateObjectMap [
-        rr:objectMap [ rr:column "\"Aufzug-Wendekreis-bei-Ausstieg\"" ] ; rr:predicate b:turningCircle
+        rr:objectMap [ rr:column "\"Aufzug-Wendekreis-bei-Ausstieg\"" ] ; rr:predicate p:turningCircle
     ]
     .
 
 
 #
-#                   b:toilet
-# bvl:SomeBuilding -------------> bvl:SomeBuilding/Toilet -----------------------> ...
+#                   p:toilet
+# bvl:SomePlace -------------> bvl:SomeBuilding/Toilet -----------------------> ...
 # ...
 #
 [] a rr:TriplesMap;
@@ -347,8 +325,8 @@
     ] ;
 
     rr:subjectMap [
-        rr:class b:Toilet ;
-        rr:template "https://behindertenverband-leipzig.de/ns/gebaeude/{ID}/Toilet" ;
+        rr:class p:Toilet ;
+        rr:template "https://behindertenverband-leipzig.de/places/{ID}-toilet" ;
         rr:termType rr:IRI
     ] ;
 
@@ -361,27 +339,27 @@
     ] ;
 
     rr:predicateObjectMap [
-        rr:objectMap [ rr:column "\"Stufen-bis-Toilette-in-Einrichtung-vorhanden\"" ] ; rr:predicate b:stepsTillToiletInPlaceAvailable
+        rr:objectMap [ rr:column "\"Stufen-bis-Toilette-in-Einrichtung-vorhanden\"" ] ; rr:predicate p:stepsTillToiletInPlaceAvailable
     ] ;
 
     rr:predicateObjectMap [
-        rr:objectMap [ rr:column "\"Anzahl-Stufen-bis-Toilette-in-Einrichtung\"" ] ; rr:predicate b:numberOfStepsTillToiletInPlace
+        rr:objectMap [ rr:column "\"Anzahl-Stufen-bis-Toilette-in-Einrichtung\"" ] ; rr:predicate p:numberOfStepsTillToiletInPlace
     ] ;
 
     rr:predicateObjectMap [
-        rr:objectMap [ rr:column "\"Hoehe-der-Stufen-bis-Toilette-in-Einrichtung-cm\"" ] ; rr:predicate b:stepsHeightTillToiletInPlace
+        rr:objectMap [ rr:column "\"Hoehe-der-Stufen-bis-Toilette-in-Einrichtung-cm\"" ] ; rr:predicate p:stepsHeightTillToiletInPlace
     ] ;
 
     rr:predicateObjectMap [
-        rr:objectMap [ rr:column "\"Stufen-bis-Toilette:-Handlauf-durchgehend-links-vorhanden\"" ] ; rr:predicate b:stepsTillToiletContinuousHandrailLeftAvailable
+        rr:objectMap [ rr:column "\"Stufen-bis-Toilette:-Handlauf-durchgehend-links-vorhanden\"" ] ; rr:predicate p:stepsTillToiletContinuousHandrailLeftAvailable
     ] ;
 
     rr:predicateObjectMap [
-        rr:objectMap [ rr:column "\"Stufen-bis-Toilette:-Handlauf-durchgehend-rechts-vorhanden\"" ] ; rr:predicate b:stepsTillToiletContinuousHandrailRightAvailable
+        rr:objectMap [ rr:column "\"Stufen-bis-Toilette:-Handlauf-durchgehend-rechts-vorhanden\"" ] ; rr:predicate p:stepsTillToiletContinuousHandrailRightAvailable
     ] ;
 
     rr:predicateObjectMap [
-        rr:objectMap [ rr:column "\"Stufen-bis-Toilette-Farbliche-Markierung-erste-u-letzte-Stufe\"" ] ; rr:predicate b:stepsTillToiletFirstLastColorized
+        rr:objectMap [ rr:column "\"Stufen-bis-Toilette-Farbliche-Markierung-erste-u-letzte-Stufe\"" ] ; rr:predicate p:stepsTillToiletFirstLastColorized
     ] ;
 
     rr:predicateObjectMap [
@@ -389,57 +367,57 @@
     ] ;
 
     rr:predicateObjectMap [
-        rr:objectMap [ rr:column "\"ToilettenTuer-von-außen-entriegelbar\"" ] ; rr:predicate b:toiletDoorUnlockableFromOutside
+        rr:objectMap [ rr:column "\"ToilettenTuer-von-außen-entriegelbar\"" ] ; rr:predicate p:toiletDoorUnlockableFromOutside
     ] ;
 
     rr:predicateObjectMap [
-        rr:objectMap [ rr:column "\"Notklingel-in-Toilettenkabine-vorhanden\"" ] ; rr:predicate b:emergencyBellInsideCabinAvailable
+        rr:objectMap [ rr:column "\"Notklingel-in-Toilettenkabine-vorhanden\"" ] ; rr:predicate p:emergencyBellInsideCabinAvailable
     ] ;
 
     rr:predicateObjectMap [
-        rr:objectMap [ rr:column "\"Hoehe-Notklingel-in-Toilettenkabine\"" ] ; rr:predicate b:distanceFromGroundEmergencyBellInsideCabin
+        rr:objectMap [ rr:column "\"Hoehe-Notklingel-in-Toilettenkabine\"" ] ; rr:predicate p:distanceFromGroundEmergencyBellInsideCabin
     ] ;
 
     rr:predicateObjectMap [
-        rr:objectMap [ rr:column "\"Bewegungsflaeche-vor-WC-Tiefe-cm\"" ] ; rr:predicate b:areaInFrontOfWCDepthCm
+        rr:objectMap [ rr:column "\"Bewegungsflaeche-vor-WC-Tiefe-cm\"" ] ; rr:predicate p:areaInFrontOfWCDepthCm
     ] ;
 
     rr:predicateObjectMap [
-        rr:objectMap [ rr:column "\"Bewegungsflaeche-vor-WC-Tiefe-cm\"" ] ; rr:predicate b:areaInFrontOfWCDepthCm
+        rr:objectMap [ rr:column "\"Bewegungsflaeche-vor-WC-Tiefe-cm\"" ] ; rr:predicate p:areaInFrontOfWCDepthCm
     ] ;
 
     rr:predicateObjectMap [
-        rr:objectMap [ rr:column "\"Bewegungsflaeche-vor-WC-Breite-cm\"" ] ; rr:predicate b:areaInFrontOfWCWidthCm
+        rr:objectMap [ rr:column "\"Bewegungsflaeche-vor-WC-Breite-cm\"" ] ; rr:predicate p:areaInFrontOfWCWidthCm
     ] ;
 
     rr:predicateObjectMap [
-        rr:objectMap [ rr:column "\"Bewegungsflaeche-links-vom-WC:-Tiefe-cm\"" ] ; rr:predicate b:areaLeftOfWCDepthCm
+        rr:objectMap [ rr:column "\"Bewegungsflaeche-links-vom-WC:-Tiefe-cm\"" ] ; rr:predicate p:areaLeftOfWCDepthCm
     ] ;
 
     rr:predicateObjectMap [
-        rr:objectMap [ rr:column "\"Bewegungsflaeche-links-vom-WC:-Breite-cm\"" ] ; rr:predicate b:areaLeftOfWCWidthCm
+        rr:objectMap [ rr:column "\"Bewegungsflaeche-links-vom-WC:-Breite-cm\"" ] ; rr:predicate p:areaLeftOfWCWidthCm
     ] ;
 
     rr:predicateObjectMap [
-        rr:objectMap [ rr:column "\"Bewegungsflaeche-rechts-vom-WC:-Tiefe-cm\"" ] ; rr:predicate b:areaRightOfWCDepthCm
+        rr:objectMap [ rr:column "\"Bewegungsflaeche-rechts-vom-WC:-Tiefe-cm\"" ] ; rr:predicate p:areaRightOfWCDepthCm
     ] ;
 
     rr:predicateObjectMap [
-        rr:objectMap [ rr:column "\"Bewegungsflaeche-rechts-vom-WC:-Breite-cm\"" ] ; rr:predicate b:areaRightOfWCWidthCm
+        rr:objectMap [ rr:column "\"Bewegungsflaeche-rechts-vom-WC:-Breite-cm\"" ] ; rr:predicate p:areaRightOfWCWidthCm
     ] ;
 
     rr:predicateObjectMap [
-        rr:objectMap [ rr:column "\"Stuetzgriff-neben-WC-vorhanden\"" ] ; rr:predicate b:supportHandleAvailable
+        rr:objectMap [ rr:column "\"Stuetzgriff-neben-WC-vorhanden\"" ] ; rr:predicate p:supportHandleAvailable
     ] ;
 
     rr:predicateObjectMap [
-        rr:objectMap [ rr:column "\"Stuetzgriff-neben-WC-links-klappbar\"" ] ; rr:predicate b:toiletLeftSupportHandleIsFoldable
+        rr:objectMap [ rr:column "\"Stuetzgriff-neben-WC-links-klappbar\"" ] ; rr:predicate p:toiletLeftSupportHandleIsFoldable
     ] ;
 
     rr:predicateObjectMap [
-        rr:objectMap [ rr:column "\"Stuetzgriff-neben-WC-rechts-klappbar\"" ] ; rr:predicate b:toiletRightSupportHandleIsFoldable
+        rr:objectMap [ rr:column "\"Stuetzgriff-neben-WC-rechts-klappbar\"" ] ; rr:predicate p:toiletRightSupportHandleIsFoldable
     ] ;
 
     rr:predicateObjectMap [
-        rr:objectMap [ rr:column "\"Aktivierung-Amatur-Waschbecken-Toilettenkabine\"" ] ; rr:predicate b:vanityBasinFittingActivation
+        rr:objectMap [ rr:column "\"Aktivierung-Amatur-Waschbecken-Toilettenkabine\"" ] ; rr:predicate p:vanityBasinFittingActivation
     ] .
