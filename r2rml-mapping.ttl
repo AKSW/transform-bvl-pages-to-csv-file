@@ -129,6 +129,10 @@
     ] ;
 
     rr:predicateObjectMap [
+        rr:objectMap [ rr:column "\"Titel\"" ] ; rr:predicate dc:title
+    ] ;
+
+    rr:predicateObjectMap [
         rr:objectMap [ rr:column "\"Longitude\"" ] ; rr:predicate geo:long
     ] ;
 
@@ -162,6 +166,10 @@
         rr:class p:Entrance ;
         rr:template "https://behindertenverband-leipzig.de/places/{ID}-entrance" ;
         rr:termType rr:IRI
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:objectMap [ rr:column "\"Titel\"" ] ; rr:predicate dc:title
     ] ;
 
     rr:predicateObjectMap [
@@ -272,6 +280,10 @@
     ] ;
 
     rr:predicateObjectMap [
+        rr:objectMap [ rr:column "\"Titel\"" ] ; rr:predicate dc:title
+    ] ;
+
+    rr:predicateObjectMap [
         rr:objectMap [ rr:column "\"Aufzug-Ort-Aufenthaltsort-Aufzugsberechtigter\"" ] ; rr:predicate p:locationOfElevatorMaintainer
     ] ;
 
@@ -328,6 +340,10 @@
         rr:class p:Toilet ;
         rr:template "https://behindertenverband-leipzig.de/places/{ID}-toilet" ;
         rr:termType rr:IRI
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:objectMap [ rr:column "\"Titel\"" ] ; rr:predicate dc:title
     ] ;
 
     rr:predicateObjectMap [
