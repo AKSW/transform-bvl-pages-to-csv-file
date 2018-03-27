@@ -1,4 +1,4 @@
-@prefix :       <https://behindertenverband-leipzig.de/ns/r2rml/> .
+@prefix :       <https://raw.githubusercontent.com/AKSW/transform-bvl-pages-to-csv-file/master/r2rml-mapping.ttl#> .
 @prefix acc:    <https://github.com/AKSW/leds-asp-f-ontologies/raw/master/ontologies/place-accessibility/ontology.ttl#> .
 @prefix p:      <https://github.com/AKSW/leds-asp-f-ontologies/raw/master/ontologies/place/ontology.ttl#> .
 @prefix bvl:    <https://behindertenverband-leipzig.de/ns/gebaeude/> .
@@ -11,13 +11,14 @@
 @prefix wa:     <http://semweb.mmlab.be/ns/wa#> .
 
 #
-# This file contains a R2RML mapping. It is used to transform table-like data to RDF structures.
+# This file contains a R2RML mapping. It is used to transform table-like data to RDF structures using
+# a R2RML parser, such as sparqlmap.
 #
 
 :r2rml
     # target table (in this case the CSV file)
     rr:logicalTable [
-        rr:tableName "\"le-online-extracted-places.csv\""
+        rr:tableName "\"places.csv\""
     ] ;
     # subject information
     rr:subjectMap [
@@ -81,57 +82,9 @@
         rr:predicate p:locationParkingLotOnSite
     ] ;
 
-    #
-    # References ------------------------------------------------------------------------------
-    #
-
-    # Reference to Elevator entity
-    rr:predicateObjectMap [
-        rr:objectMap [ rr:template "https://behindertenverband-leipzig.de/places/{ID}-elevator" ] ;
-        rr:predicate p:elevator
-    ] ;
-
-    # Reference to Entrance entity
-    rr:predicateObjectMap [
-        rr:objectMap [ rr:template "https://behindertenverband-leipzig.de/places/{ID}-entrance" ] ;
-        rr:predicate p:entrance
-    ] ;
-
-    # Reference to Location entity
-    rr:predicateObjectMap [
-        rr:objectMap [ rr:template "https://behindertenverband-leipzig.de/places/{ID}-location" ] ;
-        rr:predicate p:location
-    ] ;
-
-    # Reference to Toilet entity
-    rr:predicateObjectMap [
-        rr:objectMap [ rr:template "https://behindertenverband-leipzig.de/places/{ID}-toilet" ] ;
-        rr:predicate p:toilet
-    ] .
-
 #
-#                   p:location                                geo:long
-# bvl:SomePlace -------------> bvl:SomePlace/Location -----------------------> ...
-#                                                             geo:lat
-#                                                           -----------------------> ...
-# ...
+# Geo/Location related information
 #
-[] a rr:TriplesMap;
-
-    rr:logicalTable [
-        rr:tableName "\"le-online-extracted-places.csv\""
-    ] ;
-
-    rr:subjectMap [
-        rr:class p:Location ;
-        rr:template "https://behindertenverband-leipzig.de/places/{ID}-location" ;
-        rr:termType rr:IRI
-    ] ;
-
-    rr:predicateObjectMap [
-        rr:objectMap [ rr:column "\"Titel\"" ] ; rr:predicate dc:title
-    ] ;
-
     rr:predicateObjectMap [
         rr:objectMap [ rr:column "\"Longitude\"" ] ; rr:predicate geo:long
     ] ;
@@ -149,29 +102,11 @@
     ] ;
     rr:predicateObjectMap [
         rr:objectMap [ rr:column "\"Ort\"" ] ; rr:predicate schema:addressLocality
-    ] .
+    ] ;
 
 #
-#                   p:entrance
-# bvl:SomePlace -------------> bvl:SomePlace/Entrance -----------------------> ...
-# ...
+# Entrance related
 #
-[] a rr:TriplesMap;
-
-    rr:logicalTable [
-        rr:tableName "\"le-online-extracted-places.csv\""
-    ] ;
-
-    rr:subjectMap [
-        rr:class p:Entrance ;
-        rr:template "https://behindertenverband-leipzig.de/places/{ID}-entrance" ;
-        rr:termType rr:IRI
-    ] ;
-
-    rr:predicateObjectMap [
-        rr:objectMap [ rr:column "\"Titel\"" ] ; rr:predicate dc:title
-    ] ;
-
     rr:predicateObjectMap [
         rr:objectMap [ rr:column "\"Eingangsbereich-rollstuhlgerecht\"" ] ; rr:predicate acc:suitableForWheelchairs
     ] ;
@@ -258,27 +193,11 @@
 
     rr:predicateObjectMap [
         rr:objectMap [ rr:column "\"Rampe-Farbliche-Markierung-an-Beginn-u-Ende-der-Rampe-vorhanden\"" ] ; rr:predicate p:rampStartEndColorized
-    ]
-    .
-
-
-#
-#                   p:elevator
-# bvl:SomePlace -------------> bvl:SomePlace/Elevator -----------------------> ...
-# ...
-#
-[] a rr:TriplesMap;
-
-    rr:logicalTable [
-        rr:tableName "\"le-online-extracted-places.csv\""
     ] ;
 
-    rr:subjectMap [
-        rr:class p:Elevator ;
-        rr:template "https://behindertenverband-leipzig.de/places/{ID}-elevator" ;
-        rr:termType rr:IRI
-    ] ;
-
+#
+# Elevator related
+#
     rr:predicateObjectMap [
         rr:objectMap [ rr:column "\"Titel\"" ] ; rr:predicate dc:title
     ] ;
@@ -321,31 +240,11 @@
 
     rr:predicateObjectMap [
         rr:objectMap [ rr:column "\"Aufzug-Wendekreis-bei-Ausstieg\"" ] ; rr:predicate p:turningCircle
-    ]
-    .
-
+    ] ;
 
 #
-#                   p:toilet
-# bvl:SomePlace -------------> bvl:SomeBuilding/Toilet -----------------------> ...
-# ...
+# Toilet related
 #
-[] a rr:TriplesMap;
-
-    rr:logicalTable [
-        rr:tableName "\"le-online-extracted-places.csv\""
-    ] ;
-
-    rr:subjectMap [
-        rr:class p:Toilet ;
-        rr:template "https://behindertenverband-leipzig.de/places/{ID}-toilet" ;
-        rr:termType rr:IRI
-    ] ;
-
-    rr:predicateObjectMap [
-        rr:objectMap [ rr:column "\"Titel\"" ] ; rr:predicate dc:title
-    ] ;
-
     rr:predicateObjectMap [
         rr:objectMap [ rr:column "\"Toilette-rollstuhlgerecht\"" ] ; rr:predicate acc:suitableForWheelchairs
     ] ;
