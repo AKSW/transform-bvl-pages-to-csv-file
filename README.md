@@ -28,7 +28,7 @@ If you want to transform the CSV file a RDF file yourself, you can use this [doc
 
 We also developed, based on the building accessibility ontology, an extended set of SHACL rules. [SHACL](https://en.wikipedia.org/wiki/SHACL) can be used to formulate rules about RDF graphs. Using a SHACL processor helps evaluating, if a given dataset is valid or not.
 
-You can found the SHACL rules here: https://github.com/AKSW/shacl-shapes/tree/master/shape-groups/accessible-building
+You can found the SHACL rules here: https://github.com/AKSW/shacl-shapes/tree/master/shape-groups/accessible-place
 
 ## Usage infos
 
