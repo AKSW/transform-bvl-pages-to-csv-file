@@ -14,6 +14,9 @@
 # This file contains a R2RML mapping. It is used to transform table-like data to RDF structures using
 # a R2RML parser, such as sparqlmap.
 #
+# Meta data about properties and classes can be found at:
+# https://github.com/AKSW/leds-asp-f-ontologies/tree/master/ontologies/place
+#
 
 :r2rml
     # target table (in this case the CSV file)

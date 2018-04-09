@@ -399,7 +399,7 @@ foreach ($extractedData as $key => $extractedEntry) {
 echo PHP_EOL . PHP_EOL . '----------';
 
 // Generate CSV file
-createCSVFile('le-online-extracted-places.csv', $finalData);
+createCSVFile('places.csv', $finalData);
 
 echo PHP_EOL;
 echo PHP_EOL;
