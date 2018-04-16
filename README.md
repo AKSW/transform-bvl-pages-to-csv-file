@@ -17,10 +17,10 @@ The [R2RML](https://www.w3.org/TR/r2rml/)-mapping ([file](https://github.com/AKS
 
 Our R2RML mapping is based on a couple of controlled vocabularies, such as [Dublin Core](http://purl.org/dc/elements/1.1/) and [The vocabulary for (L)OD description of wheelchair accessibility](http://semweb.mmlab.be/ns/wa#) as well as two vocabularies, inspired by and based on the data model of the building database, developed by ourselves.
 
-* The [building ontology](https://github.com/AKSW/leds-asp-f-ontologies/tree/master/ontologies/building) contains properties and classes about buildings in general.
-* The [building accessibility ontology](https://github.com/AKSW/leds-asp-f-ontologies/tree/master/ontologies/building-accessibility) contains properties to model accessibility information of a building.
+* The [place ontology](https://github.com/AKSW/leds-asp-f-ontologies/tree/master/ontologies/place) contains properties and classes about buildings in general.
+* The [place accessibility ontology](https://github.com/AKSW/leds-asp-f-ontologies/tree/master/ontologies/place-accessibility) contains properties to model accessibility information of a building.
 
-The file [places.ttl](places.ttl) was generated using sparqlmap with our R2RML-mapping.
+The file [places.n3](places.n3) was generated using sparqlmap with our R2RML-mapping.
 
 If you want to transform the CSV file a RDF file yourself, you can use this [docker-container](https://github.com/k00ni/sparqlmap-docker).
 
@@ -28,7 +28,7 @@ If you want to transform the CSV file a RDF file yourself, you can use this [doc
 
 We also developed, based on the building accessibility ontology, an extended set of SHACL rules. [SHACL](https://en.wikipedia.org/wiki/SHACL) can be used to formulate rules about RDF graphs. Using a SHACL processor helps evaluating, if a given dataset is valid or not.
 
-You can found the SHACL rules here: https://github.com/AKSW/shacl-shapes/tree/master/shape-groups/accessible-building
+You can found the SHACL rules here: https://github.com/AKSW/shacl-shapes/tree/master/shape-groups/accessible-place
 
 ## Usage infos
 
