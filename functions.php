@@ -199,12 +199,12 @@ function loadCSVFileIntoArray($filepath)
  * Helper function to handle invalid values such as 20000000 from outdated entries.
  *
  * @param int/string $value
- * @return string ja or nein
+ * @return string true or false
  */
 function getBinaryAnswer($value)
 {
     $value = (int)$value;
-    return 1 == $value ? 'ja' : 'nein';
+    return 1 == $value ? 'true' : 'false';
 }
 
 /**

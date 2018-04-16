@@ -143,43 +143,43 @@ foreach ($htmlPages as $url => $category) {
 
         // entry area fully accessible for wheelchair users
         if (false !== strpos($entry, '1111.gif')) {
-            $extractedData[$key]['Eingangsbereich-rollstuhlgerecht'] = 'vollständig';
+            $extractedData[$key]['Eingangsbereich-rollstuhlgerecht'] = 'fully';
         } else {
             // entry area partly accessible for wheelchair users
             if (false !== strpos($entry, '2222.gif')) {
-                $extractedData[$key]['Eingangsbereich-rollstuhlgerecht'] = 'teilweise';
+                $extractedData[$key]['Eingangsbereich-rollstuhlgerecht'] = 'partly';
             } else {
-                $extractedData[$key]['Eingangsbereich-rollstuhlgerecht'] = 'nein';
+                $extractedData[$key]['Eingangsbereich-rollstuhlgerecht'] = 'false';
             }
         }
 
         // lift fully accessable for wheelchair users
         if (false !== strpos($entry, '3333.gif')) {
-            $extractedData[$key]['Personenaufzug-rollstuhlgerecht'] = 'ja';
+            $extractedData[$key]['Personenaufzug-rollstuhlgerecht'] = 'true';
         } else {
-           $extractedData[$key]['Personenaufzug-rollstuhlgerecht'] = 'nein';
+           $extractedData[$key]['Personenaufzug-rollstuhlgerecht'] = 'false';
         }
 
         // lift for persons available
         if (false !== strpos($entry, '4444.gif')) {
-            $extractedData[$key]['Personenaufzug-vorhanden'] = 'ja';
+            $extractedData[$key]['Personenaufzug-vorhanden'] = 'true';
         } else {
-            $extractedData[$key]['Personenaufzug-vorhanden'] = 'nein';
+            $extractedData[$key]['Personenaufzug-vorhanden'] = 'false';
 
-            if ('ja' == $extractedData[$key]['Personenaufzug-rollstuhlgerecht']) {
-                $extractedData[$key]['Personenaufzug-vorhanden'] = 'ja';
+            if ('true' == $extractedData[$key]['Personenaufzug-rollstuhlgerecht']) {
+                $extractedData[$key]['Personenaufzug-vorhanden'] = 'true';
             }
         }
 
         // WC fully accessable for wheelchair users
         if (false !== strpos($entry, '5555.gif')) {
-            $extractedData[$key]['Toilette-rollstuhlgerecht'] = 'vollständig';
+            $extractedData[$key]['Toilette-rollstuhlgerecht'] = 'fully';
         } else {
             // WC partly accessable for wheelchair users
             if (false !== strpos($entry, '6666.gif')) {
-                $extractedData[$key]['Toilette-rollstuhlgerecht'] = 'teilweise';
+                $extractedData[$key]['Toilette-rollstuhlgerecht'] = 'partly';
             } else {
-                $extractedData[$key]['Toilette-rollstuhlgerecht'] = 'nein';
+                $extractedData[$key]['Toilette-rollstuhlgerecht'] = 'false';
             }
         }
     }
@@ -299,18 +299,18 @@ foreach ($extractedData as $key => $extractedEntry) {
              */
             $extractedEntry['Kleinste-Tuerbreite-bis-Erreichen-der-Einrichtung-cm'] = transformStringToFloat($originalEntry[45]);
 
-            if ('ja' == getBinaryAnswer($originalEntry[46])) {
+            if ('true' == getBinaryAnswer($originalEntry[46])) {
                 $doorUri = 'https://github.com/AKSW/leds-asp-f-ontologies/raw/master/ontologies/building/ontology.ttl#AutomaticDoor';
-            } elseif ('ja' == getBinaryAnswer($originalEntry[47])) {
+            } elseif ('true' == getBinaryAnswer($originalEntry[47])) {
                 $doorUri = 'https://github.com/AKSW/leds-asp-f-ontologies/raw/master/ontologies/building/ontology.ttl#SemiautomaticDoor';
-            } elseif ('ja' == getBinaryAnswer($originalEntry[48])) {
+            } elseif ('true' == getBinaryAnswer($originalEntry[48])) {
                 $doorUri = 'https://github.com/AKSW/leds-asp-f-ontologies/raw/master/ontologies/building/ontology.ttl#CirclingLeafDoor';
-            } elseif ('ja' == getBinaryAnswer($originalEntry[49])) {
+            } elseif ('true' == getBinaryAnswer($originalEntry[49])) {
                 $doorUri = 'https://github.com/AKSW/leds-asp-f-ontologies/raw/master/ontologies/building/ontology.ttl#SlideDoor';
-            } elseif ('ja' == getBinaryAnswer($originalEntry[51])) {
+            } elseif ('true' == getBinaryAnswer($originalEntry[51])) {
                 $doorUri = 'https://github.com/AKSW/leds-asp-f-ontologies/raw/master/ontologies/building/ontology.ttl#SwingDoor';
-            } elseif ('ja' == getBinaryAnswer($originalEntry[50])
-                || 'ja' == getBinaryAnswer($originalEntry[52])) {
+            } elseif ('true' == getBinaryAnswer($originalEntry[50])
+                || 'true' == getBinaryAnswer($originalEntry[52])) {
                 $doorUri = 'https://github.com/AKSW/leds-asp-f-ontologies/raw/master/ontologies/building/ontology.ttl#SomeDoor';
             }
             $extractedEntry['Tuerart-am-Eingang'] = $doorUri;
@@ -338,7 +338,7 @@ foreach ($extractedData as $key => $extractedEntry) {
             // leaving a lift. because of this fact, lifts are not fully accessible, if value here is "gering"
             if (false !== strpos($originalEntry[33], 'geringen Wendekreis beachten!')) {
                 $extractedEntry['Aufzug-Wendekreis-bei-Ausstieg'] = 'gering';
-                $extractedEntry['Personenaufzug-rollstuhlgerecht'] = 'teilweise';
+                $extractedEntry['Personenaufzug-rollstuhlgerecht'] = 'partly';
             } else {
                 $extractedEntry['Aufzug-Wendekreis-bei-Ausstieg'] = 'ausreichend';
             }
@@ -368,9 +368,9 @@ foreach ($extractedData as $key => $extractedEntry) {
             $extractedEntry['Stuetzgriff-neben-WC-links-klappbar'] = getBinaryAnswer($originalEntry[82]);
             $extractedEntry['Stuetzgriff-neben-WC-rechts-klappbar'] = getBinaryAnswer($originalEntry[83]);
 
-            if ('ja' == getBinaryAnswer($originalEntry[84])) {
+            if ('true' == getBinaryAnswer($originalEntry[84])) {
                 $type = 'https://github.com/AKSW/leds-asp-f-ontologies/raw/master/ontologies/building/ontology.ttl#Phototube';
-            } elseif ('ja' == getBinaryAnswer($originalEntry[85])) {
+            } elseif ('true' == getBinaryAnswer($originalEntry[85])) {
                 $type = 'https://github.com/AKSW/leds-asp-f-ontologies/raw/master/ontologies/building/ontology.ttl#LeverArm';
             } else {
                 $type = '';
