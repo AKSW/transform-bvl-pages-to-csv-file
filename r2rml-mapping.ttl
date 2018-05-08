@@ -241,6 +241,10 @@
         rr:objectMap [ rr:column "\"Aufzug-Wendekreis-bei-Ausstieg\"" ] ; rr:predicate p:elevatorTurningCircleExit
     ] ;
 
+    rr:predicateObjectMap [
+        rr:objectMap [ rr:column "\"Personenaufzug-rollstuhlgerecht\"" ] ; rr:predicate p:elevatorSuitableForWheelchairs
+    ] ;
+
 #
 # Toilet related
 #
@@ -334,4 +338,9 @@
 
     rr:predicateObjectMap [
         rr:objectMap [ rr:column "\"Aktivierung-Amatur-Waschbecken-Toilettenkabine\"" ] ; rr:predicate p:toiletVanityBasinFittingActivation
+    ] ;
+
+    # mark all entries as publicly available
+    rr:predicateObjectMap [
+        rr:predicate p:publicly-available ; rr:object "true"
     ] .
