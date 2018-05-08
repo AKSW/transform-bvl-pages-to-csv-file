@@ -153,9 +153,9 @@ foreach ($htmlPages as $url => $category) {
             }
         }
 
-        // lift fully accessable for wheelchair users
+        // lift partly/not accessable for wheelchair users
         if (false !== strpos($entry, '3333.gif')) {
-            $extractedData[$key]['Personenaufzug-rollstuhlgerecht'] = 'true';
+            $extractedData[$key]['Personenaufzug-rollstuhlgerecht'] = 'partly';
         } else {
            $extractedData[$key]['Personenaufzug-rollstuhlgerecht'] = 'false';
         }
@@ -166,10 +166,8 @@ foreach ($htmlPages as $url => $category) {
         } else {
             $extractedData[$key]['Personenaufzug-vorhanden'] = 'false';
 
-            if ('true' == $extractedData[$key]['Personenaufzug-rollstuhlgerecht']) {
-                $extractedData[$key]['Personenaufzug-rollstuhlgerecht'] = 'partly';
-            } else {
-                $extractedData[$key]['Personenaufzug-rollstuhlgerecht'] = 'false';
+            if ('partly' == $extractedData[$key]['Personenaufzug-rollstuhlgerecht']) {
+                $extractedData[$key]['Personenaufzug-vorhanden'] = 'true';
             }
         }
 
