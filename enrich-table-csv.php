@@ -167,7 +167,9 @@ foreach ($htmlPages as $url => $category) {
             $extractedData[$key]['Personenaufzug-vorhanden'] = 'false';
 
             if ('true' == $extractedData[$key]['Personenaufzug-rollstuhlgerecht']) {
-                $extractedData[$key]['Personenaufzug-vorhanden'] = 'partly';
+                $extractedData[$key]['Personenaufzug-rollstuhlgerecht'] = 'partly';
+            } else {
+                $extractedData[$key]['Personenaufzug-rollstuhlgerecht'] = 'false';
             }
         }
 
