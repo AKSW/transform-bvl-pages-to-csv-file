@@ -241,10 +241,6 @@
         rr:objectMap [ rr:column "\"Aufzug-Wendekreis-bei-Ausstieg\"" ] ; rr:predicate p:elevatorTurningCircleExit
     ] ;
 
-    rr:predicateObjectMap [
-        rr:objectMap [ rr:column "\"Personenaufzug-rollstuhlgerecht\"" ] ; rr:predicate p:elevatorSuitableForWheelchairs
-    ] ;
-
 #
 # Toilet related
 #

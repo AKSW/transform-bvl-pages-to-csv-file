@@ -238,14 +238,6 @@ foreach ($extractedData as $key => $extractedEntry) {
             $extractedEntry['Longitude'] = $long;
             $extractedEntry['Latitude'] = $lat;
 
-            $extractedEntry['ID'] = generateBuildingUniqueIdentifier(
-                $extractedEntry['Titel'],
-                $extractedEntry['Strasse'],
-                $extractedEntry['PLZ'],
-                $extractedEntry['Ort'],
-                $i++
-            );
-
             /*
              * Parkplatz
              */
@@ -387,6 +379,17 @@ foreach ($extractedData as $key => $extractedEntry) {
             $extractedEntry['Allgemeine-Hilfestellungen-vor-Ort-vorhanden'] = getBinaryAnswer($originalEntry[111]);
             $extractedEntry['Beschreibung-Hilfestellungen-vor-Ort'] = $originalEntry[112];
 
+            $extractedEntry['ID'] = generateBuildingUniqueIdentifier(
+                $extractedEntry['Titel'],
+                $extractedEntry['Strasse'],
+                $extractedEntry['PLZ'],
+                $extractedEntry['Ort'],
+                // certain accessibility features of the place
+                $extractedEntry['Beschreibung-Hilfestellungen-vor-Ort'],
+                $extractedEntry['Eingangsbereich-rollstuhlgerecht'],
+                $extractedEntry['Personenaufzug-rollstuhlgerecht'],
+                $extractedEntry['Toilette-rollstuhlgerecht']
+            );
             $finalData[] = $extractedEntry;
 
             echo PHP_EOL . $extractedEntry['Titel'] . ' finished' . PHP_EOL;

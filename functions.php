@@ -46,15 +46,30 @@ function createCSVFile($filename, array $infoArray)
  * @param string $city
  * @param string $position
  */
-function generateBuildingUniqueIdentifier($title, $street, $zip, $city, $position)
-{
+function generateBuildingUniqueIdentifier(
+    $title,
+    $street,
+    $zip,
+    $city,
+    $localSupport,
+    $entranceIsSuitableForWheelchairs,
+    $elevatorIsSuitableForWheelchairs,
+    $toiletIsSuitableForWheelchairs
+) {
+    // generates a hash. which reflects certain accessibility features
+    $uniqueHash = hash(
+        'sha256',
+        $localSupport . $entranceIsSuitableForWheelchairs . $elevatorIsSuitableForWheelchairs . $toiletIsSuitableForWheelchairs
+    );
+
     /*
      * generate good title for the URL later on (URL encoded, but still human readable)
      */
-    $buildingUri = $position . '-' . simplifyUriPart($title)
+    $buildingUri = simplifyUriPart($title)
         . '-' . simplifyUriPart($street)
         . '-' . simplifyUriPart($zip)
-        . '-' . simplifyUriPart($city);
+        . '-' . simplifyUriPart($city)
+        . '-' . substr($uniqueHash, 0, 8);
 
     return str_replace(array('&'), array('-and-'), simplifyUriPart($buildingUri));
 }
