@@ -3,11 +3,12 @@
     "authors": [
         {
             "name": "Konrad Abicht",
-            "email": "abicht@informatik.uni-leipzig.de",
+            "homepage": "http://aksw.org/KonradAbicht.html",
             "role": "Maintainer, Developer"
         }
     ],
     "require": {
+        "php": ">=5.6",
         "gabordemooij/redbean": "4.*",
         "php-curl-class/php-curl-class": "4.*"
     },
