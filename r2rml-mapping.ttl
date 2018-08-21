@@ -86,6 +86,50 @@
     ] ;
 
 #
+# Contact information
+#
+
+    rr:predicateObjectMap [
+        rr:objectMap [ rr:column "\"Ansprechpartner-Name\"" ] ;
+        rr:predicate p:contactPersonName
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:objectMap [ rr:column "\"Ansprechpartner-Telefon\"" ] ;
+        rr:predicate p:contactPersonPhone
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:objectMap [ rr:column "\"Webseite-Einrichtung\"" ] ;
+        rr:predicate schema:WebSite
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:objectMap [ rr:column "\"E-Mail-Einrichtung\"" ] ;
+        rr:predicate schema:email
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:objectMap [ rr:column "\"Telefon-Einrichtung\"" ] ;
+        rr:predicate schema:telephone
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:objectMap [ rr:column "\"Fax-Einrichtung\"" ] ;
+        rr:predicate schema:faxNumber
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:objectMap [ rr:column "\"Interviewer-Name\"" ] ;
+        rr:predicate p:intervieweeName
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:objectMap [ rr:column "\"Datum-letzter-Befragung\"" ] ;
+        rr:predicate p:dateOfLatestInterview
+    ] ;
+
+#
 # Geo/Location related information
 #
     rr:predicateObjectMap [

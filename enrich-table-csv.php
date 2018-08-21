@@ -54,7 +54,6 @@ foreach ($htmlPages as $url => $category) {
 
     // go through list of entries (created by split HTML by <h2> tags)
     foreach ($fileContentArray as $a => $entry) {
-
         $extractedData[++$key] = array();
 
         // transform encoding to UTF-8
@@ -217,12 +216,24 @@ foreach ($extractedData as $key => $extractedEntry) {
             }
 
             /**
-             * Allgemeine Informationen
+             * General information
              */
             $extractedEntry['Strasse'] = $street;
             $extractedEntry['PLZ'] = $originalEntry[9];
             $extractedEntry['Ort'] = $originalEntry[10];
             $extractedEntry['Oeffnungszeiten'] = $originalEntry[19];
+
+            /*
+             * Contact information
+             */
+            $extractedEntry['Ansprechpartner-Name'] = $originalEntry[13];
+            $extractedEntry['Ansprechpartner-Telefon'] = $originalEntry[13];
+            $extractedEntry['Webseite-Einrichtung'] = $originalEntry[6];
+            $extractedEntry['E-Mail-Einrichtung'] = $originalEntry[6];
+            $extractedEntry['Telefon-Einrichtung'] = $originalEntry[11];
+            $extractedEntry['Fax-Einrichtung'] = $originalEntry[12];
+            $extractedEntry['Interviewer-Name'] = $originalEntry[17];
+            $extractedEntry['Datum-letzter-Befragung'] = $originalEntry[18];
 
             /**
              * Enrich data with adress information
