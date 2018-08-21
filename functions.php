@@ -23,7 +23,7 @@ function createCSVFile($filename, array $infoArray)
     $file = fopen($filename, 'w');
     $copy = $infoArray;
 
-    if (0 == count($infoArray)) {
+    if (0 == \count($infoArray)) {
         throw new Exception('Given $infoArray parameter is empty. Aborting CSV file generation...');
     }
 
@@ -57,7 +57,7 @@ function generateBuildingUniqueIdentifier(
     $toiletIsSuitableForWheelchairs
 ) {
     // generates a hash. which reflects certain accessibility features
-    $uniqueHash = hash(
+    $uniqueHash = \hash(
         'sha256',
         $localSupport . $entranceIsSuitableForWheelchairs . $elevatorIsSuitableForWheelchairs . $toiletIsSuitableForWheelchairs
     );
@@ -69,18 +69,18 @@ function generateBuildingUniqueIdentifier(
         . '-' . simplifyUriPart($street)
         . '-' . simplifyUriPart($zip)
         . '-' . simplifyUriPart($city)
-        . '-' . substr($uniqueHash, 0, 8);
+        . '-' . \substr($uniqueHash, 0, 8);
 
-    return str_replace(array('&'), array('-and-'), simplifyUriPart($buildingUri));
+    return \str_replace(array('&'), array('-and-'), simplifyUriPart($buildingUri));
 }
 
 function simplifyUriPart($string)
 {
-    $string = trim(
-        preg_replace('/\s\s+/', '-', strtolower($string))
+    $string = \trim(
+        \preg_replace('/\s\s+/', '-', \strtolower($string))
     );
 
-    $string = str_replace(
+    $string = \str_replace(
         array(
             ' ',     'ß',  'ä',  'Ä',  'ü',  'Ü',  'ö',  'Ö',  '<br-/>', '&uuml;', '&auml;', '&ouml;', '"', 'eacute;', '/',     '\\',
             'ouml;', 'auml;', 'uuml;', ',', "'", '>', '<', '`', '´', '(', ')'
@@ -94,7 +94,7 @@ function simplifyUriPart($string)
     );
 
     // transform multiple dashes to one
-    return preg_replace('/--+/', '-', $string);
+    return \preg_replace('/--+/', '-', $string);
 }
 
 /**
@@ -135,7 +135,7 @@ function getLongLatForAddress($title, $street, $zip, $city)
         ));
 
         // store JSON result
-        $latLongInformation = json_decode(json_encode($curl->response), true);
+        $latLongInformation = \json_decode(\json_encode($curl->response), true);
 
         if (isset($latLongInformation['results'][0]['geometry']['location']['lat'])) {
             $lat = $latLongInformation['results'][0]['geometry']['location']['lat'];
@@ -174,21 +174,21 @@ function getLongLatForAddress($title, $street, $zip, $city)
 function unsetEmptyEntry($array)
 {
     foreach ($array as $key => $entry) {
-        if (is_array($entry)) {
+        if (\is_array($entry)) {
             $array[$key] = unsetEmptyEntry($entry);
 
             if (empty($array[$key])) {
                 unset($array[$key]);
             }
 
-        } elseif (is_array($entry) && 0 == count($entry)) {
+        } elseif (\is_array($entry) && 0 == \count($entry)) {
             unset($array[$key]);
         } elseif ('' == $entry || empty($entry)) {
             unset($array[$key]);
         }
     }
 
-    if (is_array($array) && 0 == count($array)) {
+    if (\is_array($array) && 0 == \count($array)) {
         return '';
     } else {
         return $array;
@@ -201,12 +201,12 @@ function unsetEmptyEntry($array)
  */
 function loadCSVFileIntoArray($filepath)
 {
-    $file = fopen($filepath, 'r');
+    $file = \fopen($filepath, 'r');
     $lines = array();
-    while (($line = fgetcsv($file, 0, ';', '*')) !== FALSE) {
+    while (($line = \fgetcsv($file, 0, ';', '*')) !== FALSE) {
       $lines[] = $line;
     }
-    fclose($file);
+    \fclose($file);
     return $lines;
 }
 
@@ -230,8 +230,8 @@ function getBinaryAnswer($value)
  */
 function transformStringToFloat($value)
 {
-    if (is_string($value) && false !== strpos($value, 'e')) {
-        return (0 + str_replace(',', '.', $value));
+    if (\is_string($value) && false !== \strpos($value, 'e')) {
+        return (0 + \str_replace(',', '.', $value));
     }
 
     return $value;

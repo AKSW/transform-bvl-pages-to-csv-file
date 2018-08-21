@@ -379,6 +379,9 @@ foreach ($extractedData as $key => $extractedEntry) {
             $extractedEntry['Allgemeine-Hilfestellungen-vor-Ort-vorhanden'] = getBinaryAnswer($originalEntry[111]);
             $extractedEntry['Beschreibung-Hilfestellungen-vor-Ort'] = $originalEntry[112];
 
+            // mark entry as available for the public
+            $extractedEntry['Freigegeben'] = 'true';
+
             $extractedEntry['ID'] = generateBuildingUniqueIdentifier(
                 $extractedEntry['Titel'],
                 $extractedEntry['Strasse'],
