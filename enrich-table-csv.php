@@ -303,20 +303,20 @@ foreach ($extractedData as $key => $extractedEntry) {
             $extractedEntry['Kleinste-Tuerbreite-bis-Erreichen-der-Einrichtung-cm'] = transformStringToFloat($originalEntry[45]);
 
             if ('true' == getBinaryAnswer($originalEntry[46])) {
-                $doorUri = 'https://github.com/AKSW/leds-asp-f-ontologies/raw/master/ontologies/building/ontology.ttl#AutomaticDoor';
+                $door = 'AutomaticDoor';
             } elseif ('true' == getBinaryAnswer($originalEntry[47])) {
-                $doorUri = 'https://github.com/AKSW/leds-asp-f-ontologies/raw/master/ontologies/building/ontology.ttl#SemiautomaticDoor';
+                $door = 'SemiautomaticDoor';
             } elseif ('true' == getBinaryAnswer($originalEntry[48])) {
-                $doorUri = 'https://github.com/AKSW/leds-asp-f-ontologies/raw/master/ontologies/building/ontology.ttl#CirclingLeafDoor';
+                $door = 'CirclingLeafDoor';
             } elseif ('true' == getBinaryAnswer($originalEntry[49])) {
-                $doorUri = 'https://github.com/AKSW/leds-asp-f-ontologies/raw/master/ontologies/building/ontology.ttl#SlideDoor';
+                $door = 'SlideDoor';
             } elseif ('true' == getBinaryAnswer($originalEntry[51])) {
-                $doorUri = 'https://github.com/AKSW/leds-asp-f-ontologies/raw/master/ontologies/building/ontology.ttl#SwingDoor';
+                $door = 'SwingDoor';
             } elseif ('true' == getBinaryAnswer($originalEntry[50])
                 || 'true' == getBinaryAnswer($originalEntry[52])) {
-                $doorUri = 'https://github.com/AKSW/leds-asp-f-ontologies/raw/master/ontologies/building/ontology.ttl#SomeDoor';
+                $door = 'SomeDoor';
             }
-            $extractedEntry['Tuerart-am-Eingang'] = $doorUri;
+            $extractedEntry['Tuerart-am-Eingang'] = $door;
 
             $extractedEntry['Tuerart-am-Eingang-Automatische-Tuer'] = getBinaryAnswer($originalEntry[46]);
             $extractedEntry['Tuerart-am-Eingang-Halbautomatische-Tuer'] = getBinaryAnswer($originalEntry[47]);
