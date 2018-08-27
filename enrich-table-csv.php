@@ -372,11 +372,11 @@ foreach ($extractedData as $key => $extractedEntry) {
             $extractedEntry['Stuetzgriff-neben-WC-rechts-klappbar'] = getBinaryAnswer($originalEntry[83]);
 
             if ('true' == getBinaryAnswer($originalEntry[84])) {
-                $type = 'https://github.com/AKSW/leds-asp-f-ontologies/raw/master/ontologies/building/ontology.ttl#Phototube';
+                $type = 'Phototube';
             } elseif ('true' == getBinaryAnswer($originalEntry[85])) {
-                $type = 'https://github.com/AKSW/leds-asp-f-ontologies/raw/master/ontologies/building/ontology.ttl#LeverArm';
+                $type = 'LeverArm';
             } else {
-                $type = '';
+                $type = 'Unknown';
             }
             $extractedEntry['Aktivierung-Amatur-Waschbecken-Toilettenkabine'] = $type;
 
