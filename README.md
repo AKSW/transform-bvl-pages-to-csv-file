@@ -36,7 +36,7 @@ We used the closed building database maintained by the BVL to generate the CSV f
 
 ## License
 
-CSV and RDF (n3) files are licensed under the terms of [*Data licence Germany – attribution – version 2.0*](https://www.govdata.de/dl-de/by-2-0).
+CSV and RDF (n3) files are licensed under the terms of [*Data licence Germany – attribution – version 2.0*](https://www.govdata.de/dl-de/by-2-0). Please use the following text as attribution: `Behindertenverband Leipzig e.V., www.le-online.de`.
 
 Software source code is licensed under the terms of [*GPL 3.0*](http://www.gnu.org/licenses/gpl-3.0.en.html).
 
