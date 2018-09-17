@@ -285,7 +285,7 @@ foreach ($extractedData as $key => $extractedEntry) {
             $rampHeight = transformStringToFloat($originalEntry[36]);
             $rampLength = transformStringToFloat($originalEntry[35]);
             if (0 < $rampHeight && 0 < $rampLength) {
-                $extractedEntry['Rampe-Steigung'] = round(asin($rampHeight / $rampLength)*100, 2);
+                $extractedEntry['Rampe-Steigung'] = \round(\asin($rampHeight / $rampLength)*100, 2);
             } else {
                 $extractedEntry['Rampe-Steigung'] = '-';
             }
@@ -340,10 +340,10 @@ foreach ($extractedData as $key => $extractedEntry) {
             // check for "geringen Wendekreis beachten!", which means that there is not sufficient space when
             // leaving a lift. because of this fact, lifts are not fully accessible, if value here is "gering"
             if (false !== strpos($originalEntry[33], 'geringen Wendekreis beachten!')) {
-                $extractedEntry['Aufzug-Wendekreis-bei-Ausstieg'] = 'gering';
+                $extractedEntry['Aufzug-Wendekreis-bei-Ausstieg'] = 'not sufficient';
                 $extractedEntry['Personenaufzug-rollstuhlgerecht'] = 'partly';
             } else {
-                $extractedEntry['Aufzug-Wendekreis-bei-Ausstieg'] = 'ausreichend';
+                $extractedEntry['Aufzug-Wendekreis-bei-Ausstieg'] = 'sufficient';
             }
 
             /*
@@ -404,6 +404,9 @@ foreach ($extractedData as $key => $extractedEntry) {
                 $extractedEntry['Personenaufzug-rollstuhlgerecht'],
                 $extractedEntry['Toilette-rollstuhlgerecht']
             );
+
+            $extractedEntry['Notizen'] = $originalEntry[1];
+
             $finalData[] = $extractedEntry;
 
             echo PHP_EOL . $extractedEntry['Titel'] . ' finished' . PHP_EOL;

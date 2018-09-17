@@ -8,6 +8,7 @@
 @prefix geo:    <http://www.w3.org/2003/01/geo/> .
 @prefix rr:     <http://www.w3.org/ns/r2rml#> .
 @prefix schema: <http://schema.org/> .
+@prefix skos:   <http://www.w3.org/2004/02/skos/core#> .
 @prefix wa:     <http://semweb.mmlab.be/ns/wa#> .
 
 #
@@ -48,6 +49,11 @@
     rr:predicateObjectMap [
         rr:objectMap [ rr:column "\"Oeffnungszeiten\"" ] ;
         rr:predicate p:openingHours
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:objectMap [ rr:column "\"Notizen\"" ] ;
+        rr:predicate skos:note
     ] ;
 
     rr:predicateObjectMap [
@@ -251,6 +257,11 @@
     rr:predicateObjectMap [
         rr:objectMap [ rr:column "\"Breite-der-Rampe-cm\"" ] ;
         rr:predicate p:entranceRampWidthCm
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:objectMap [ rr:column "\"Rampe-Steigung\"" ] ;
+        rr:predicate p:entranceRampGradient
     ] ;
 
     rr:predicateObjectMap [
