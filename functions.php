@@ -20,20 +20,20 @@ try {
  */
 function createCSVFile($filename, array $infoArray)
 {
-    $file = fopen($filename, 'w');
+    $file = \fopen($filename, 'w');
     $copy = $infoArray;
 
     if (0 == \count($infoArray)) {
         throw new Exception('Given $infoArray parameter is empty. Aborting CSV file generation...');
     }
 
-    fputcsv($file, array_keys(array_shift($copy)));
+    \fputcsv($file, \array_keys(\array_shift($copy)));
     $i = 0;
     foreach ($infoArray as $value) {
-        fputcsv($file, $value);
+        \fputcsv($file, $value);
         ++$i;
     }
-    fclose($file);
+    \fclose($file);
     echo PHP_EOL . 'CSV-file '. $filename .' with '. $i .' entries created.';
 }
 
