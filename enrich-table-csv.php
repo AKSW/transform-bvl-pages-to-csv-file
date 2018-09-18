@@ -175,12 +175,7 @@ foreach ($mdbDatabaseCSVExport as $key => $originalEntry) {
     if (isset($collectedEntries[$titleStreet])){
         echo PHP_EOL;
         echo PHP_EOL;
-        echo PHP_EOL;
-        echo $titleStreet .' habe ich schonmal!!!!!!!!';
-        echo PHP_EOL;
-        echo PHP_EOL;
-        echo PHP_EOL;
-
+        echo $titleStreet . ' exists already. Entry will be ignored!';
         continue;
     } else {
         $collectedEntries[$titleStreet] = $titleStreet;
@@ -249,8 +244,7 @@ foreach ($mdbDatabaseCSVExport as $key => $originalEntry) {
     $extractedEntry['Breite-der-Rampe-cm'] = transformStringToFloat($originalEntry[37]);
     $extractedEntry['Rampe-Handlauf-durchgehend-links-vorhanden'] = getBinaryAnswer($originalEntry[38]);
     $extractedEntry['Rampe-Handlauf-durchgehend-rechts-vorhanden'] = getBinaryAnswer($originalEntry[39]);
-    $extractedEntry['Rampe-Farbliche-Markierung-an-Beginn-u-Ende-der-Rampe-vorhanden']
-        = getBinaryAnswer($originalEntry[40]);
+    $extractedEntry['Rampe-Farbliche-Markierung-an-Beginn-u-Ende-der-Rampe-vorhanden'] = getBinaryAnswer($originalEntry[40]);
 
     // compute degree of the ramp
     $rampHeight = transformStringToFloat($originalEntry[36]);
