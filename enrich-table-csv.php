@@ -1,137 +1,21 @@
 <?php
 
-/**
- * This file creates a CSV file based on the different homepages about place information and
- * their degree of access for disabled people. These homepages where created by the
- * Behindertenverband Leipzig e.V (http://www.le-online.de/).
- *
- * The following implementation is a basic web scraper which analyses the HTML and tries to
- * extract as much information as possible about the places. Used images (e.g. 1111.gif) are
- * very helpful to determine exact thematical classification.
+/*
+ * this file uses the raw CSV export provided by the Behindertenverband Leipzig e.V. containing
+ * information about Leipzig buildings and their degree of accessibility. it enriches data, cleans
+ * it and provides a CSV file with more clear information, aligned values and stable schema.
  */
 
 require 'vendor/autoload.php';
 
-setlocale(LC_CTYPE, 'de_DE.UTF-8');
-
-/*
- * Important variables
- */
-$htmlPages = array(
-    'http://www.le-online.de/bildung.htm' => 'Bildung',
-    'http://www.le-online.de/dienst.htm' => 'Dienst',
-    'http://www.le-online.de/gast.htm' => 'Gastwirtschaft',
-    'http://www.le-online.de/gesund.htm' => 'Gesundheit',
-    'http://www.le-online.de/recht.htm' => 'Recht',
-    'http://www.le-online.de/verband.htm' => 'Verbände',
-    'http://www.le-online.de/verkehr.htm' => 'Verkehr'
-);
-
-$publicDataFromHomepage = array();
-$matches = null;
+\setlocale(LC_CTYPE, 'de_DE.UTF-8');
 
 $fileContentArray = array();
 $key = 0;
-$curl = new Curl\Curl();
 
-if (false === file_exists(__DIR__ . '/table.csv')) {
+if (false === \file_exists(__DIR__ . '/table.csv')) {
     throw new Exception('File ' . __DIR__ . '/table.csv not found. Aborting ...');
     return;
-}
-
-/**
- * This loops checks the BVL homepage and creates a list of all buildings/places which are
- * publicly available.
- */
-foreach ($htmlPages as $url => $category) {
-    // use $url to ask for HTML to analyse later on
-    $curl->get($url);
-
-    // store HTML
-    $fileContent = $curl->response;
-
-    // create an array, based on HTML-areas separated by <h2> tags
-    // there was no other way to determine each place.
-    $fileContentArray = \explode('<h2>', $fileContent);
-
-    // go through list of entries (created by split HTML by <h2> tags)
-    foreach ($fileContentArray as $a => $entry) {
-
-        // transform encoding to UTF-8
-        $entry = \iconv('iso-8859-1', 'utf-8', $entry);
-
-        // remove <br> tags for better readability
-        $entry = \str_replace('<br>', '', $entry);
-
-        /*
-         * title
-         */
-        preg_match(
-            '/(.*)<\/h2>/si',
-            $entry,
-            $matches
-        );
-
-        if (isset($matches[1])) {
-            $title = $matches[1];
-
-            // search for <a name=""> </a> stuff and remove it
-            \preg_match(
-                '/<a.*>(.*)<\/a>/si',
-                $title,
-                $matches
-            );
-
-            if (isset($matches[1])) {
-                $title = $matches[1];
-            }
-
-            $title = \str_replace(
-                array('&amp;', '&auml;', '&uuml;', '&ouml;', '&Auml;', '&Uuml;', '&Ouml;', '&szlig;', '&eacute;'),
-                array('&', 'ä', 'ü', 'ö', 'Ä', 'Ü', 'Ö', 'ß', 'é'),
-                \trim($title)
-            );
-        } else {
-            continue;
-        }
-
-        if ('Anlagen/Parks' == $title) {
-            unset($publicDataFromHomepage[$title]);
-            continue;
-        } else {
-            /**
-             * Exception handling of certain entries of Verkehr category, which will be kept
-             */
-            $exceptionalEntries = array(
-                'Augustusplatz (Tiefgarage)',
-                'Augustusplatz (zwischen Gewandhaus und Moritzbastei, vor dem Park)',
-                'DRK Bahnhofsdienst',
-                'Flughafen Leipzig - Halle GmbH',
-                'Hauptbahnhof',
-                'Lotterstr. / Martin-Luther-Ring (Neues Rathaus)',
-                'Martin-Luther-Ring (Haupteingang Neues Rathaus)',
-                'Mobilitätszentrum am Hauptbahnhof',
-                'Neumarkt 1- 5 (Galeria Kaufhof)',
-                'Neumarkt 9 (Städtisches Kaufhaus)',
-                'Ökumenische Bahnhofsmission Leipzig',
-                'Osthalle Hauptbahnhof (Parkhaus)',
-                'Petersbogen (Parkhaus)',
-                'Service-Center des MDV und der Leipziger Stadtwerke',
-                'Westhalle Hauptbahnhof (Parkhaus)',
-                'Zentraler Bushalt - Hbf. Osthalle',
-                'ZOO (Parkhaus)',
-            );
-            if (!in_array($title, $exceptionalEntries) && 'Verkehr' == $category) {
-                unset($publicDataFromHomepage[$title]);
-                continue;
-            }
-        }
-
-        // if we reach this part, the entry is valid
-
-        $publicDataFromHomepage[$title]['Titel'] = $title;
-        $publicDataFromHomepage[$title]['Kategorie'] = $category;
-    }
 }
 
 $collectedEntries = array();
@@ -143,6 +27,8 @@ echo '#########' . PHP_EOL;
 echo 'Protokoll' . PHP_EOL;
 echo '#########';
 echo PHP_EOL;
+
+$category_info = loadCategoryInformation();
 
 $mdbDatabaseCSVExport = loadCSVFileIntoArray('table.csv');
 
@@ -161,11 +47,23 @@ foreach ($mdbDatabaseCSVExport as $key => $originalEntry) {
         'Titel' => $originalEntry[5],
     ];
 
-    // if the current CSV-entry could be found on the BVL homepage
-    if (isset($publicDataFromHomepage[$originalEntry[5]])) {
+    // field B10 reflects if this entry is meant to be public
+    if ('1' == $originalEntry[15]) {
         $extractedEntry['Freigegeben'] = 'true';
     } else {
         $extractedEntry['Freigegeben'] = 'false';
+    }
+
+    // main and secondary category
+    if (isset($category_info[$originalEntry[2]])) {
+        $extractedEntry['Hauptkategorie'] = $category_info[$originalEntry[2]]['main_category'];
+        $extractedEntry['Nebenkategorie'] = $category_info[$originalEntry[2]]['secondary_category'];
+
+    } else {
+        echo PHP_EOL.PHP_EOL.'ERROR: Found no category information for: '. $extractedEntry['Titel'];
+
+        $extractedEntry['Hauptkategorie'] = '';
+        $extractedEntry['Nebenkategorie'] = '';
     }
 
     $street = \preg_replace('/(\(.*?\))/si', '', $originalEntry[7]);
@@ -307,7 +205,7 @@ foreach ($mdbDatabaseCSVExport as $key => $originalEntry) {
     // leaving a lift. because of this fact, lifts are not fully accessible, if value here is "gering"
     if (false !== \strpos($originalEntry[33], 'geringen Wendekreis beachten!')) {
         $extractedEntry['Aufzug-Wendekreis-bei-Ausstieg'] = 'not sufficient';
-        $extractedEntry['Personenaufzug-rollstuhlgerecht'] = 'partly';
+        $extractedEntry['Aufzug-rollstuhlgerecht'] = 'partly';
     } else {
         $extractedEntry['Aufzug-Wendekreis-bei-Ausstieg'] = 'sufficient';
     }
@@ -371,9 +269,9 @@ foreach ($mdbDatabaseCSVExport as $key => $originalEntry) {
         && 70 <= (float)$extractedEntry['Aufzug-Hoehe-oberster-Bedienknopf-außerhalb-cm']
             && 115 >= (float)$extractedEntry['Aufzug-Hoehe-oberster-Bedienknopf-außerhalb-cm']
     ) {
-        $extractedEntry['Personenaufzug-rollstuhlgerecht'] = 'partly';
+        $extractedEntry['Aufzug-rollstuhlgerecht'] = 'partly';
     } else {
-        $extractedEntry['Personenaufzug-rollstuhlgerecht'] = 'false';
+        $extractedEntry['Aufzug-rollstuhlgerecht'] = 'false';
     }
 
     // entrance
@@ -434,15 +332,13 @@ foreach ($mdbDatabaseCSVExport as $key => $originalEntry) {
         // certain accessibility features of the place
         $extractedEntry['Beschreibung-Hilfestellungen-vor-Ort'],
         $extractedEntry['Eingangsbereich-rollstuhlgerecht'],
-        $extractedEntry['Personenaufzug-rollstuhlgerecht'],
+        $extractedEntry['Aufzug-rollstuhlgerecht'],
         $extractedEntry['Toilette-rollstuhlgerecht']
     );
 
     $extractedEntry['Notizen'] = $originalEntry[1];
 
     $finalData[] = $extractedEntry;
-
-    // echo PHP_EOL . $extractedEntry['Titel'] . ' finished' . PHP_EOL;
 }
 
 echo PHP_EOL . PHP_EOL . '----------';

@@ -199,11 +199,11 @@ function unsetEmptyEntry($array)
  * @param string $filepath
  * @return array
  */
-function loadCSVFileIntoArray($filepath)
+function loadCSVFileIntoArray($filepath, $sep = ';', $str = '*')
 {
     $file = \fopen($filepath, 'r');
-    $lines = array();
-    while (($line = \fgetcsv($file, 0, ';', '*')) !== FALSE) {
+    $lines = [];
+    while (($line = \fgetcsv($file, 0, $sep, $str)) !== FALSE) {
       $lines[] = $line;
     }
     \fclose($file);
@@ -235,4 +235,54 @@ function transformStringToFloat($value)
     }
 
     return $value;
+}
+
+function loadCategoryInformation()
+{
+    $category_info = loadCSVFileIntoArray('category-info.csv', ',', '"');
+
+    // remove first line with column titles
+    unset($category_info[0]);
+
+    $category_array = [];
+
+    foreach ($category_info as $key => $entry) {
+        /*
+         * A = $entry[0] = Titel-Nr
+         * C = $entry[2] = Hauptkategorie
+         *
+         *
+         * backward check
+         * Titel3 ([8]) => Titel2 ([5]) => Titel1 ([1])
+         */
+        $extractedEntry = [];
+
+        /*
+         * main category
+         */
+        $main_cat = \preg_replace( "/\r|\n/", '', $entry[2]);
+
+        /*
+         * secondary category
+         */
+        // Titel3
+        if (isset($entry[8]) && !empty($entry[8])) {
+            $sec_cat = \preg_replace( "/\r|\n/", '', $entry[8]);
+
+        // Titel2
+        } elseif (isset($entry[5]) && !empty($entry[5])) {
+            $sec_cat = \preg_replace( "/\r|\n/", '', $entry[5]);
+
+        // nothing found
+        } else {
+            $sec_cat = '';
+        }
+
+        $finalData[$entry[0]] = [
+            'main_category' => $main_cat,
+            'secondary_category' => $sec_cat,
+        ];
+    }
+
+    return $finalData;
 }

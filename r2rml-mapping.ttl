@@ -37,8 +37,13 @@
     ] ;
 
     rr:predicateObjectMap [
-        rr:objectMap [ rr:column "\"Kategorie\"" ] ;
+        rr:objectMap [ rr:column "\"Hauptkategorie\"" ] ;
         rr:predicate dbo:category
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:objectMap [ rr:column "\"Nebenkategorie\"" ] ;
+        rr:predicate p:category
     ] ;
 
     rr:predicateObjectMap [
@@ -283,12 +288,12 @@
 # Elevator related
 #
     rr:predicateObjectMap [
-        rr:objectMap [ rr:column "\"Personenaufzug-vorhanden\"" ] ;
+        rr:objectMap [ rr:column "\"Aufzug-in-der-Einrichtung-vorhanden\"" ] ;
         rr:predicate acc:elevatorAvailable
     ] ;
 
     rr:predicateObjectMap [
-        rr:objectMap [ rr:column "\"Personenaufzug-rollstuhlgerecht\"" ] ;
+        rr:objectMap [ rr:column "\"Aufzug-rollstuhlgerecht\"" ] ;
         rr:predicate acc:elevatorSuitableForWheelchairs
     ] ;
 
