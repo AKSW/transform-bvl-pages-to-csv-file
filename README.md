@@ -1,15 +1,15 @@
 # Enriched CSV version of the building database from Behindertenverband Leipzig e.V.
 
-This repository contains a simple PHP script, which transforms an exported CSV file with building information to an enriched version. It contains further information and normalized strings. Information are about buildings located in Leipzig and their degree of accessibility. The source data is being provided by the [Behindertenverband Leipzig e.V](http://www.le-online.de/).
+This repository contains a simple PHP script, which transforms an exported CSV file with building information to an enriched version. It contains further information and normalized strings. Information are about buildings located in Leipzig and their degree of accessibility. The source data is being provided by the [Behindertenverband Leipzig e.V](https://stadtfuehrer.behindertenverband-leipzig.de/).
 
 The following areas are covered currently:
-* Education: http://www.le-online.de/bildung.htm
-* Services: http://www.le-online.de/dienst.htm
-* Restaurants: http://www.le-online.de/gast.htm
-* Health: http://www.le-online.de/gesund.htm
-* Law: http://www.le-online.de/recht.htm
-* Organizations: http://www.le-online.de/verband.htm
-* Traffic: http://www.le-online.de/verkehr.htm
+* Education: https://stadtfuehrer.behindertenverband-leipzig.de/bildung.htm
+* Services: https://stadtfuehrer.behindertenverband-leipzig.de/dienst.htm
+* Restaurants: https://stadtfuehrer.behindertenverband-leipzig.de/gast.htm
+* Health: https://stadtfuehrer.behindertenverband-leipzig.de/gesund.htm
+* Law: https://stadtfuehrer.behindertenverband-leipzig.de/recht.htm
+* Organizations: https://stadtfuehrer.behindertenverband-leipzig.de/verband.htm
+* Traffic: https://stadtfuehrer.behindertenverband-leipzig.de/verkehr.htm
 
 ## R2RML-Mapping (CSV => RDF)
 
